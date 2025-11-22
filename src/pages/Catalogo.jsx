@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Row, Col, Icon, Input } from 'design-react-kit';
 import { Link, useSearchParams } from 'react-router-dom';
-import { fetchPackageSearch, fetchGroupList, fetchGroupShow, enrichDatasetsWithOrgDetails } from '../api/ckan';
+import { fetchPackageSearch, fetchGroupList, fetchGroupShow, fetchOrganizationList, fetchOrganizationShow, enrichDatasetsWithOrgDetails } from '../api/ckan';
 import DatasetCard from '../components/DatasetCard';
 
 export default function Catalogo() {
@@ -10,20 +10,26 @@ export default function Catalogo() {
   const [activeSearch, setActiveSearch] = useState(searchParams.get('q') || '');
   const [sort, setSort] = useState('metadata_modified desc');
   const [theme, setTheme] = useState(searchParams.get('tema') || '');
+  const [ente, setEnte] = useState(searchParams.get('ente') || '');
   const [datasets, setDatasets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   const [themes, setThemes] = useState([]);
+  const [enti, setEnti] = useState([]);
   const [totalDatasets, setTotalDatasets] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const ROWS_PER_PAGE = 30;
 
   useEffect(() => {
     const temaParam = searchParams.get('tema');
+    const enteParam = searchParams.get('ente');
     const qParam = searchParams.get('q');
     if (temaParam) {
       setTheme(temaParam);
+    }
+    if (enteParam) {
+      setEnte(enteParam);
     }
     if (qParam) {
       setSearchInput(qParam);
@@ -31,13 +37,13 @@ export default function Catalogo() {
     }
   }, [searchParams]);
 
-  // Carica temi solo una volta
+  // Carica temi ed enti solo una volta
   useEffect(() => {
-    async function loadThemes() {
+    async function loadThemesAndOrgs() {
       try {
+        // Carica temi
         const themesListRes = await fetchGroupList();
         if (themesListRes.success) {
-          // Carica i dettagli di ogni tema per ottenere i titoli
           const themesDetails = await Promise.all(
             themesListRes.result.map(id => fetchGroupShow(id))
           );
@@ -46,11 +52,23 @@ export default function Catalogo() {
             .map(d => d.result);
           setThemes(themesWithTitles);
         }
+        
+        // Carica enti
+        const entiListRes = await fetchOrganizationList();
+        if (entiListRes.success) {
+          const entiDetails = await Promise.all(
+            entiListRes.result.map(id => fetchOrganizationShow(id))
+          );
+          const entiWithTitles = entiDetails
+            .filter(d => d.success)
+            .map(d => d.result);
+          setEnti(entiWithTitles);
+        }
       } catch (err) {
-        console.error('Errore caricamento temi:', err);
+        console.error('Errore caricamento filtri:', err);
       }
     }
-    loadThemes();
+    loadThemesAndOrgs();
   }, []);
 
   // Carica dataset con paginazione
@@ -58,6 +76,14 @@ export default function Catalogo() {
     async function loadData() {
       setLoading(true);
       setCurrentPage(0);
+      
+      // Aggiorna URL con i parametri di ricerca
+      const params = {};
+      if (activeSearch) params.q = activeSearch;
+      if (theme) params.tema = theme;
+      if (ente) params.ente = ente;
+      setSearchParams(params, { replace: true });
+      
       try {
         let apiParams = { 
           q: activeSearch || '', 
@@ -66,9 +92,16 @@ export default function Catalogo() {
           sort 
         };
         
-        // Aggiungi filtro per gruppo/tema se selezionato
+        // Costruisci filtri CKAN
+        const filters = [];
         if (theme) {
-          apiParams.fq = `groups:${theme}`;
+          filters.push(`groups:${theme}`);
+        }
+        if (ente) {
+          filters.push(`organization:${ente}`);
+        }
+        if (filters.length > 0) {
+          apiParams.fq = filters.join(' AND ');
         }
         
         const datasetsRes = await fetchPackageSearch(apiParams);
@@ -91,7 +124,7 @@ export default function Catalogo() {
       }
     }
     loadData();
-  }, [activeSearch, sort, theme]);
+  }, [activeSearch, sort, theme, ente]);
 
   // Funzione per caricare più dataset
   const loadMore = async () => {
@@ -107,8 +140,15 @@ export default function Catalogo() {
         sort 
       };
       
+      const filters = [];
       if (theme) {
-        apiParams.fq = `groups:${theme}`;
+        filters.push(`groups:${theme}`);
+      }
+      if (ente) {
+        filters.push(`organization:${ente}`);
+      }
+      if (filters.length > 0) {
+        apiParams.fq = filters.join(' AND ');
       }
       
       const datasetsRes = await fetchPackageSearch(apiParams);
@@ -136,7 +176,9 @@ export default function Catalogo() {
     setSearchInput('');
     setActiveSearch('');
     setTheme('');
+    setEnte('');
     setSort('metadata_modified desc');
+    setSearchParams({}, { replace: true });
   };
 
   return (
@@ -188,7 +230,7 @@ export default function Catalogo() {
 
           {/* Filters Row */}
           <Row className="g-3">
-            <Col md={6} lg={4}>
+            <Col md={6} lg={3}>
               <div className="form-group mb-0">
                 <label htmlFor="theme" className="form-label active fw-semibold">
                   Tema
@@ -206,7 +248,25 @@ export default function Catalogo() {
                 </select>
               </div>
             </Col>
-            <Col md={6} lg={4}>
+            <Col md={6} lg={3}>
+              <div className="form-group mb-0">
+                <label htmlFor="ente" className="form-label active fw-semibold">
+                  Ente
+                </label>
+                <select 
+                  id="ente" 
+                  className="form-select"
+                  value={ente} 
+                  onChange={e => setEnte(e.target.value)}
+                >
+                  <option value="">Tutti gli enti</option>
+                  {enti.map(e => (
+                    <option key={e.name} value={e.name}>{e.title}</option>
+                  ))}
+                </select>
+              </div>
+            </Col>
+            <Col md={6} lg={3}>
               <div className="form-group mb-0">
                 <label htmlFor="sort" className="form-label active fw-semibold">
                   Ordina per
@@ -223,21 +283,19 @@ export default function Catalogo() {
                 </select>
               </div>
             </Col>
-            <Col md={12} lg={4}>
+            <Col md={6} lg={3}>
               <div className="form-group mb-0">
-                <label className="form-label active fw-semibold" style={{ visibility: 'hidden' }}>
+                <label className="form-label active fw-semibold d-block" style={{ visibility: 'hidden' }}>
                   Azioni
                 </label>
-                <Button 
-                  color="primary" 
-                  className="w-100" 
-                  onClick={handleResetFilters}
-                  outline
+                <button 
                   type="button"
+                  className="btn btn-outline-primary w-100"
+                  onClick={handleResetFilters}
                 >
-                  <Icon icon="it-refresh" color="primary" size="sm" className="me-2" aria-hidden="true" />
+                  <Icon icon="it-refresh" size="sm" className="me-2" aria-hidden="true" />
                   Ripristina filtri
-                </Button>
+                </button>
               </div>
             </Col>
           </Row>

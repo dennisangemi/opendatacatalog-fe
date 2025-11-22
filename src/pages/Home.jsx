@@ -80,7 +80,7 @@ export default function Home() {
             <Col lg={10}>
               <div className="text-center mb-4">
                 <h1 className="text-white display-4 fw-bold mb-3">
-                  Portale Open Data del Comune di Messina
+                  Cerca i dati aperti
                 </h1>
                 <p className="lead text-white opacity-90 mb-0">
                   Consulta, ricerca e scarica i dati pubblici in formato aperto.

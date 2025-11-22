@@ -70,7 +70,7 @@ export default function Enti() {
                   <div className="d-flex align-items-center">
                     <div className="it-profile-avatar-wrapper me-3">
                       {e.image_display_url ? (
-                        <div className="it-avatar size-xl" style={{ 
+                        <div className="it-avatar size-xl rounded-circle" style={{ 
                           width: '80px', 
                           height: '80px',
                           display: 'flex',
@@ -85,13 +85,13 @@ export default function Enti() {
                             style={{ 
                               maxWidth: '100%',
                               maxHeight: '100%',
-                              objectFit: 'contain'
+                              objectFit: 'cover'
                             }}
                             onError={(ev) => { 
                               ev.target.style.display = 'none'; 
                               ev.target.parentElement.innerHTML = `
-                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                                  <svg class="icon icon-white icon-xl" role="img">
+                                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                  <svg class="icon icon-primary icon-xl" role="img">
                                     <use href="#it-pa"></use>
                                   </svg>
                                 </div>
@@ -100,7 +100,7 @@ export default function Enti() {
                           />
                         </div>
                       ) : (
-                        <div className="it-avatar size-xl rounded-circle bg-primary" style={{ 
+                        <div className="it-avatar size-xl rounded-circle bg-light border" style={{ 
                           width: '80px', 
                           height: '80px',
                           display: 'flex',
@@ -110,7 +110,7 @@ export default function Enti() {
                           <Icon 
                             icon="it-pa" 
                             size="xl" 
-                            color="white"
+                            color="primary"
                           />
                         </div>
                       )}
@@ -179,7 +179,7 @@ export default function Enti() {
                       to={`/catalogo?ente=${e.name}`} 
                       className="btn btn-primary btn-sm w-100"
                     >
-                      <Icon icon="it-search" className="me-2" />
+                      <Icon icon="it-search" size="sm" color="white" className="me-2" />
                       Esplora dataset
                     </Link>
                   </div>

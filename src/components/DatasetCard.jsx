@@ -126,9 +126,9 @@ export default function DatasetCard({ dataset }) {
           {dataset.organization && (
             <div className="mb-3 p-2 bg-light rounded-3">
               <div className="d-flex align-items-center gap-2">
-                {/* Avatar organizzazione */}
-                <div className="flex-shrink-0">
-                  {dataset.organization.image_display_url ? (
+                {/* Avatar organizzazione - solo se ha immagine valida */}
+                {dataset.organization.image_display_url && (
+                  <div className="flex-shrink-0">
                     <div 
                       className="rounded-circle bg-white d-flex align-items-center justify-content-center"
                       style={{ 
@@ -147,29 +147,13 @@ export default function DatasetCard({ dataset }) {
                           objectFit: 'contain'
                         }}
                         onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.parentElement.innerHTML = `
-                            <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%; background: #0066cc;">
-                              <svg class="icon icon-white icon-xs" aria-hidden="true">
-                                <use href="#it-pa"></use>
-                              </svg>
-                            </div>
-                          `;
+                          // Se l'immagine non carica, nascondi completamente il contenitore
+                          e.target.parentElement.parentElement.style.display = 'none';
                         }}
                       />
                     </div>
-                  ) : (
-                    <div 
-                      className="rounded-circle bg-primary d-flex align-items-center justify-content-center"
-                      style={{ 
-                        width: '32px', 
-                        height: '32px'
-                      }}
-                    >
-                      <Icon icon="it-pa" color="white" size="xs" aria-hidden="true" />
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
                 <span className="text-truncate text-muted small flex-grow-1" title={dataset.organization.title}>
                   {dataset.organization.title}
                 </span>

@@ -109,9 +109,7 @@ export default function Temi() {
                   <CardBody className="d-flex flex-column p-3">
                     <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
                       <div className="d-flex align-items-center gap-2">
-                        <div className="rounded-circle bg-primary d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
-                          <span className="text-white fw-bold">{t.package_count}</span>
-                        </div>
+                        <span className="fw-bold text-primary" style={{ fontSize: '1.25rem' }}>{t.package_count}</span>
                         <div className="small text-muted text-uppercase fw-semibold" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
                           Dataset
                         </div>

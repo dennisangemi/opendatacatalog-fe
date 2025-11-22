@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Card, CardBody, CardTitle, Badge, Table, Icon, Row, Col, Accordion, AccordionHeader, AccordionBody } from 'design-react-kit';
+import { Card, CardBody, CardTitle, Badge, Table, Icon, Row, Col, Accordion, AccordionHeader, AccordionBody, notify } from 'design-react-kit';
 import { fetchPackageShow, fetchDatastoreSearch } from '../api/ckan';
 import Breadcrumbs from '../components/Breadcrumbs';
 
@@ -83,8 +83,8 @@ export default function DettaglioDataset() {
       <Row className="mt-4">
         {/* Metadata Section */}
         <Col lg={4}>
-          <Card className="shadow-sm mb-4 sticky-top" style={{ top: '2rem' }}>
-            <div className="card-header bg-primary text-white py-3 px-4">
+          <Card className="shadow-sm mb-4 sticky-top" style={{ top: '2rem', marginTop: '1.1rem' }}>
+            <div className="card-header bg-light border-bottom py-3 px-4">
               <h5 className="mb-0 fw-semibold">Informazioni Dataset</h5>
             </div>
             <CardBody className="p-0">
@@ -197,10 +197,12 @@ export default function DettaglioDataset() {
 
         {/* Resources Section */}
         <Col lg={8}>
-          <h5 className="mb-3">
-            <Icon icon="it-download" className="me-2" />
-            Risorse ({dataset.resources?.length || 0})
-          </h5>
+          <div className="mb-3">
+            <h5 className="mb-0">
+              <Icon icon="it-download" className="me-2" />
+              Risorse ({dataset.resources?.length || 0})
+            </h5>
+          </div>
           
           <Accordion>
             {dataset.resources?.map((res, index) => (
@@ -279,7 +281,7 @@ export default function DettaglioDataset() {
                       className="btn btn-outline-primary btn-sm"
                       onClick={() => {
                         navigator.clipboard.writeText(res.url);
-                        alert('URL copiato negli appunti!');
+                        notify('URL copiato!', 'L\'URL della risorsa è stato copiato negli appunti.', { state: 'success', duration: 3000 });
                       }}
                     >
                       <Icon icon="it-copy" size="sm" color="primary" className="me-2" />
