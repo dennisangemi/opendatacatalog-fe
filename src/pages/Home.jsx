@@ -66,7 +66,7 @@ export default function Home() {
   return (
     <div className="homepage-wrapper">
       {/* Hero Section con Barra di Ricerca */}
-      <section className="it-hero-wrapper it-overlay it-dark" style={{ 
+      <section className="it-hero-wrapper it-overlay it-dark hero-section-mobile" style={{ 
         background: 'linear-gradient(135deg, #0066cc 0%, #004d99 100%)',
         padding: '4rem 0 3rem',
         position: 'relative',
@@ -89,50 +89,39 @@ export default function Home() {
               </div>
               
               {/* Barra di Ricerca Grande */}
-              <div className="form-group mb-3">
-                <form onSubmit={handleSearch}>
-                  <div className="input-group input-group-lg shadow-lg" style={{
-                    borderRadius: '50px',
-                    overflow: 'hidden',
-                    background: 'white'
-                  }}>
-                    <span className="input-group-text border-0 bg-white ps-4" style={{ borderRadius: '50px 0 0 50px' }}>
-                      <Icon icon="it-search" color="primary" size="sm" aria-hidden="true" />
-                    </span>
-                    <input
-                      type="search"
-                      className="form-control border-0 shadow-none"
-                      placeholder="Cerca dataset per nome, descrizione o parola chiave..."
-                      aria-label="Cerca nel catalogo"
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                      style={{
-                        fontSize: '1.1rem',
-                        padding: '0.75rem 1rem'
-                      }}
-                    />
-                    <button
-                      type="submit"
-                      className="btn btn-primary border-0 px-5"
-                      style={{
-                        borderRadius: '0 50px 50px 0',
-                        fontWeight: '600'
-                      }}
-                      aria-label="Avvia ricerca"
-                    >
-                      Cerca
-                    </button>
-                  </div>
-                </form>
-              </div>
+              <form onSubmit={handleSearch} className="search-bar-home">
+                <span className="search-icon d-none d-md-flex">
+                  <Icon icon="it-search" color="primary" size="sm" aria-hidden="true" />
+                </span>
+                <input
+                  type="search"
+                  className="search-input"
+                  placeholder="Cerca dataset..."
+                  aria-label="Cerca nel catalogo"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
+                />
+                <button
+                  type="submit"
+                  className="search-button"
+                  aria-label="Avvia ricerca"
+                >
+                  <Icon icon="it-search" color="primary" size="sm" className="me-2 d-md-none" aria-hidden="true" />
+                  <span className="d-none d-md-inline">Cerca</span>
+                </button>
+              </form>
               
               {/* Link rapidi */}
-              <div className="text-center mt-3 mb-4">
-                <Link to="/catalogo" className="btn btn-outline-light btn-lg me-3 px-4 py-3">
+              <div className="text-center mt-3 mb-4 quick-links-container">
+                <Link to="/catalogo" className="btn btn-outline-light btn-lg me-3 px-4 py-3 quick-link-btn">
                   <Icon icon="it-list" color="white" size="sm" className="me-2" aria-hidden="true" />
                   <span className="fw-semibold">Sfoglia il catalogo</span>
                 </Link>
-                <Link to="/temi" className="btn btn-outline-light btn-lg px-4 py-3">
+                <Link to="/temi" className="btn btn-outline-light btn-lg px-4 py-3 quick-link-btn">
                   <Icon icon="it-folder" color="white" size="sm" className="me-2" aria-hidden="true" />
                   <span className="fw-semibold">Esplora per tema</span>
                 </Link>
