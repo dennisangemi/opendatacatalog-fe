@@ -37,6 +37,9 @@ Il codice è destinato a passare sotto l'ownership del Comune di Messina e farà
 - `npm run build`: Esegue il build di produzione
 - `npm run preview`: Anteprima del build di produzione
 
+## Configurazione della Sorgente Dati
+Per cambiare la sorgente dei dati, è sufficiente modificare la costante `VITE_CKAN_BASE_URL` nei file `.env`. Assicurarsi che il valore punti all'endpoint corretto delle API di CKAN.
+
 ## Contributi
 Il progetto è stato sviluppato da [Dennis Angemi](https://github.com/dennisangemi) - con il fondamentale supporto di Claude AI - e sarà trasferito al Comune di Messina per la gestione e il mantenimento futuro.
 
