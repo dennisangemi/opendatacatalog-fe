@@ -4,6 +4,7 @@ import { Card, CardBody, CardTitle, Badge, Table, Icon, Row, Col, Accordion, Acc
 import { fetchPackageShow, fetchDatastoreSearch, fetchPackageSearch } from '../api/ckan';
 import Breadcrumbs from '../components/Breadcrumbs';
 import DatasetCard from '../components/DatasetCard';
+import ReactMarkdown from 'react-markdown';
 
 export default function DettaglioDataset() {
   const { id } = useParams();
@@ -73,6 +74,10 @@ export default function DettaglioDataset() {
   if (error) return <div className="alert alert-danger">{error}</div>;
   if (!dataset) return <div className="alert alert-warning">Dataset non trovato.</div>;
 
+  // Determina se la descrizione è lunga (più di 300 caratteri o contiene caratteri markdown)
+  const description = dataset.notes || '';
+  const isLongDescription = description.length > 300 || /[#*\[\]`]/.test(description);
+
   return (
     <div className="container">
       <Breadcrumbs items={[
@@ -87,7 +92,11 @@ export default function DettaglioDataset() {
           <Icon icon="it-file" className="me-2" />
           {dataset.title}
         </h2>
-        <p className="lead text-muted">{dataset.notes}</p>
+        
+        {!isLongDescription && description && (
+          <p className="lead text-muted">{description}</p>
+        )}
+        
         <div className="mt-3">
           {dataset.groups?.map(g => (
             <Link 
@@ -101,6 +110,15 @@ export default function DettaglioDataset() {
           ))}
         </div>
       </section>
+
+      {/* Descrizione completa se troppo lunga */}
+      {isLongDescription && description && (
+        <section className="py-4 border-bottom">
+          <div className="markdown-content">
+            <ReactMarkdown>{description}</ReactMarkdown>
+          </div>
+        </section>
+      )}
 
       <Row className="mt-4">
         {/* Metadata Section */}
