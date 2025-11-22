@@ -116,7 +116,7 @@ export default function Home() {
               </form>
               
               {/* Link rapidi */}
-              <div className="text-center mt-3 mb-4 quick-links-container">
+              <div className="text-center mt-3 mb-4 quick-links-container d-none d-md-block">
                 <Link to="/catalogo" className="btn btn-outline-light btn-lg me-3 px-4 py-3 quick-link-btn">
                   <Icon icon="it-list" color="white" size="sm" className="me-2" aria-hidden="true" />
                   <span className="fw-semibold">Sfoglia il catalogo</span>
