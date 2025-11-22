@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from 'design-react-kit';
 
@@ -11,22 +11,44 @@ export default function Header() {
     console.log('Toggle menu - after:', !isNavOpen);
   };
 
+  // Blocca lo scroll del body quando il menu è aperto su mobile
+  useEffect(() => {
+    if (isNavOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    // Cleanup quando il componente viene smontato
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isNavOpen]);
+
   return (
-    <header className="it-header-wrapper">
-      {/* Header Slim */}
-      <div className="it-header-slim-wrapper">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="it-header-slim-wrapper-content">
-                <Link className="d-none d-lg-block navbar-brand" to="/">
-                  Comune di Messina
-                </Link>
+    <>
+      {/* Overlay per chiudere il menu mobile */}
+      <div 
+        className={`navbar-overlay ${isNavOpen ? 'show' : ''}`}
+        onClick={toggleNav}
+        aria-hidden="true"
+      />
+      
+      <header className="it-header-wrapper">
+        {/* Header Slim */}
+        <div className="it-header-slim-wrapper">
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                <div className="it-header-slim-wrapper-content">
+                  <Link className="d-none d-lg-block navbar-brand" to="/">
+                    Comune di Messina
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       
       {/* Header Center */}
       <div className="it-header-center-wrapper">
@@ -68,6 +90,15 @@ export default function Header() {
             <div className="col-12">
               <nav className="navbar navbar-expand-lg has-megamenu">
                 <div className={`navbar-collapsable ${isNavOpen ? 'show' : ''}`} id="nav-menu">
+                  {/* Pulsante di chiusura per mobile */}
+                  <button
+                    className="close-menu-btn d-lg-none"
+                    onClick={toggleNav}
+                    aria-label="Chiudi menu"
+                  >
+                    <Icon icon="it-close" size="lg" />
+                  </button>
+                  
                   <div className="menu-wrapper">
                     <ul className="navbar-nav">
                       <li className="nav-item">
@@ -104,5 +135,6 @@ export default function Header() {
         </div>
       </div>
     </header>
+    </>
   );
 }
