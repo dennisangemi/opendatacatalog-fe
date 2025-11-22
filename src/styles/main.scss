@@ -933,7 +933,9 @@ body {
   border-radius: 50px;
   background: white;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-width: 800px;
+  margin: 0 auto;
   
   .search-icon {
     display: flex;
@@ -948,7 +950,7 @@ body {
   .search-input {
     flex: 1;
     font-size: 1.1rem;
-    padding: 0.75rem 1rem;
+    padding: 1.25rem 1.5rem;
     border: none;
     background: white;
     outline: none;
@@ -964,9 +966,9 @@ body {
   }
   
   .search-button {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding: 1.25rem 2.5rem;
     font-weight: 600;
+    font-size: 1.05rem;
     border: none;
     background: #0066cc;
     color: white;

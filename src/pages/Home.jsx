@@ -68,7 +68,10 @@ export default function Home() {
       {/* Hero Section con Barra di Ricerca */}
       <section className="it-hero-wrapper it-overlay it-dark hero-section-mobile" style={{ 
         background: 'linear-gradient(135deg, #0066cc 0%, #004d99 100%)',
-        padding: '4rem 0 3rem',
+        minHeight: 'calc(100vh - var(--header-height, 180px))',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '6rem 0 4rem',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -78,8 +81,8 @@ export default function Home() {
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <Row className="justify-content-center">
             <Col lg={10}>
-              <div className="text-center mb-4">
-                <h1 className="text-white display-4 fw-bold mb-3">
+              <div className="text-center mb-5">
+                <h1 className="text-white display-4 fw-bold mb-4">
                   Cerca i dati aperti
                 </h1>
                 <p className="lead text-white opacity-90 mb-0">
@@ -116,7 +119,7 @@ export default function Home() {
               </form>
               
               {/* Link rapidi */}
-              <div className="text-center mt-3 mb-4 quick-links-container d-none d-md-block">
+              <div className="text-center mt-5 mb-5 quick-links-container d-none d-md-block">
                 <Link to="/catalogo" className="btn btn-outline-light btn-lg me-3 px-4 py-3 quick-link-btn">
                   <Icon icon="it-list" color="white" size="sm" className="me-2" aria-hidden="true" />
                   <span className="fw-semibold">Sfoglia il catalogo</span>
@@ -128,7 +131,7 @@ export default function Home() {
               </div>
 
               {/* Stats inline nella hero */}
-              <div className="mt-5 pt-3">
+              <div className="mt-5 pt-5">
                 <Row className="g-4 justify-content-center">
                   <Col xs="auto">
                     <div className="text-center px-3">
@@ -172,10 +175,10 @@ export default function Home() {
       </section>
       
       {/* Recent Datasets Section */}
-      <section className="section" style={{ paddingTop: '2.5rem', paddingBottom: '3rem' }}>
+      <section className="section" style={{ paddingTop: '4rem', paddingBottom: '4rem' }}>
         <div className="section-content">
           <div className="container">
-            <div className="mb-4 text-center">
+            <div className="mb-5 text-center">
               <h2 className="h3 mb-2 fw-bold">
                 <Icon icon="it-calendar" className="me-2" color="primary" aria-hidden="true" />
                 Dataset aggiornati di recente
