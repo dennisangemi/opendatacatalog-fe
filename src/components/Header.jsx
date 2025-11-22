@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from 'design-react-kit';
 
@@ -11,30 +11,8 @@ export default function Header() {
     console.log('Toggle menu - after:', !isNavOpen);
   };
 
-  // Blocca lo scroll del body quando il menu è aperto su mobile
-  useEffect(() => {
-    if (isNavOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    
-    // Cleanup quando il componente viene smontato
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isNavOpen]);
-
   return (
-    <>
-      {/* Overlay per chiudere il menu mobile */}
-      <div 
-        className={`navbar-overlay ${isNavOpen ? 'show' : ''}`}
-        onClick={toggleNav}
-        aria-hidden="true"
-      />
-      
-      <header className="it-header-wrapper">
+    <header className="it-header-wrapper">
         {/* Header Slim */}
         <div className="it-header-slim-wrapper">
           <div className="container">
@@ -88,53 +66,76 @@ export default function Header() {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <nav className="navbar navbar-expand-lg has-megamenu">
-                <div className={`navbar-collapsable ${isNavOpen ? 'show' : ''}`} id="nav-menu">
-                  {/* Pulsante di chiusura per mobile */}
-                  <button
-                    className="close-menu-btn d-lg-none"
-                    onClick={toggleNav}
-                    aria-label="Chiudi menu"
-                  >
-                    <Icon icon="it-close" size="lg" />
-                  </button>
-                  
-                  <div className="menu-wrapper">
-                    <ul className="navbar-nav">
-                      <li className="nav-item">
-                        <Link className="nav-link" to="/" onClick={() => setIsNavOpen(false)}>
-                          <span>Home</span>
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link" to="/catalogo" onClick={() => setIsNavOpen(false)}>
-                          <span>Catalogo</span>
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link" to="/temi" onClick={() => setIsNavOpen(false)}>
-                          <span>Temi</span>
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link" to="/enti" onClick={() => setIsNavOpen(false)}>
-                          <span>Enti</span>
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link" to="/informazioni" onClick={() => setIsNavOpen(false)}>
-                          <span>Informazioni</span>
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+              {/* Menu Desktop - sempre visibile su lg+ */}
+              <nav className="navbar navbar-expand-lg has-megamenu d-none d-lg-block">
+                <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/">
+                      <span>Home</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/catalogo">
+                      <span>Catalogo</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/temi">
+                      <span>Temi</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/enti">
+                      <span>Enti</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/informazioni">
+                      <span>Informazioni</span>
+                    </Link>
+                  </li>
+                </ul>
               </nav>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Menu Mobile Drawer - solo su mobile */}
+      <div className={`mobile-menu-drawer ${isNavOpen ? 'open' : ''}`}>
+        <div className="mobile-menu-header">
+          <span className="mobile-menu-title">Menu</span>
+          <button
+            className="mobile-menu-close"
+            onClick={toggleNav}
+            aria-label="Chiudi menu"
+          >
+            <Icon icon="it-close" size="lg" />
+          </button>
+        </div>
+        <nav className="mobile-menu-nav">
+          <Link className="mobile-menu-link" to="/" onClick={() => setIsNavOpen(false)}>
+            <Icon icon="it-arrow-right" size="sm" />
+            <span>Home</span>
+          </Link>
+          <Link className="mobile-menu-link" to="/catalogo" onClick={() => setIsNavOpen(false)}>
+            <Icon icon="it-arrow-right" size="sm" />
+            <span>Catalogo</span>
+          </Link>
+          <Link className="mobile-menu-link" to="/temi" onClick={() => setIsNavOpen(false)}>
+            <Icon icon="it-arrow-right" size="sm" />
+            <span>Temi</span>
+          </Link>
+          <Link className="mobile-menu-link" to="/enti" onClick={() => setIsNavOpen(false)}>
+            <Icon icon="it-arrow-right" size="sm" />
+            <span>Enti</span>
+          </Link>
+          <Link className="mobile-menu-link" to="/informazioni" onClick={() => setIsNavOpen(false)}>
+            <Icon icon="it-arrow-right" size="sm" />
+            <span>Informazioni</span>
+          </Link>
+        </nav>
+      </div>
     </header>
-    </>
   );
 }
