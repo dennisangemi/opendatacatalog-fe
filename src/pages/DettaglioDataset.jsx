@@ -105,7 +105,7 @@ export default function DettaglioDataset() {
       <Row className="mt-4">
         {/* Metadata Section */}
         <Col lg={4}>
-          <Card className="shadow-sm mb-4 sticky-top" style={{ top: '2rem', marginTop: '1.1rem' }}>
+          <Card className="shadow-sm mb-4 sticky-top dataset-metadata-card" style={{ top: '2rem', marginTop: '1.1rem' }}>
             <div className="card-header bg-light border-bottom py-3 px-4">
               <h5 className="mb-0 fw-semibold">Informazioni Dataset</h5>
             </div>
@@ -329,7 +329,7 @@ export default function DettaglioDataset() {
 
       {/* Sezione Dataset Correlati */}
       {relatedDatasets.length > 0 && (
-        <section className="mt-5 pt-4 border-top">
+        <section className="mt-5 pt-4">
           <h4 className="mb-4">
             <Icon icon="it-folder" className="me-2" />
             Dataset correlati
