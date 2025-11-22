@@ -440,7 +440,7 @@ export default function DettaglioRisorsa() {
                           </div>
                         </div>
                         <a 
-                          href={`https://opendata.comune.messina.it/datastore/dump/${id}?format=csv&bom=true`}
+                          href={`${CKAN_BASE_URL.replace('/api/3/action', '')}/datastore/dump/${id}?format=csv&bom=true`}
                           className="btn btn-primary w-100"
                           target="_blank" 
                           rel="noreferrer"
@@ -464,7 +464,7 @@ export default function DettaglioRisorsa() {
                           </div>
                         </div>
                         <a 
-                          href={`https://opendata.comune.messina.it/datastore/dump/${id}?format=json`}
+                          href={`${CKAN_BASE_URL.replace('/api/3/action', '')}/datastore/dump/${id}?format=json`}
                           className="btn btn-primary w-100"
                           target="_blank" 
                           rel="noreferrer"
