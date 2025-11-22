@@ -1158,6 +1158,31 @@ body {
     }
   }
   
+  // Prevenzione overflow su mobile per titoli e testo lungo
+  h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  .lead {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  p {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  a {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+  
   // Tabelle mobile
   .table-responsive {
     font-size: 0.875rem;
@@ -1534,6 +1559,40 @@ body {
   
   em {
     font-style: italic;
+  }
+}
+
+/* Markdown content - prevenzione overflow su mobile */
+@media (max-width: 768px) {
+  .markdown-content {
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+    
+    p, li {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+    
+    a {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+    
+    code {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-all;
+    }
+    
+    pre {
+      max-width: 100%;
+      overflow-x: auto;
+    }
   }
 }
 

@@ -347,7 +347,7 @@ export default function DettaglioDataset() {
 
       {/* Sezione Dataset Correlati */}
       {relatedDatasets.length > 0 && (
-        <section className="mt-5 pt-4">
+        <section className="mt-5 pt-4 border-top">
           <h4 className="mb-4">
             <Icon icon="it-folder" className="me-2" />
             Dataset correlati
