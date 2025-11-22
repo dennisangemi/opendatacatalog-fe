@@ -82,7 +82,7 @@ body {
   .custom-navbar-toggler {
     border: none;
     background: none;
-    padding: 0.5rem;
+    padding: 0.25rem;
     cursor: pointer;
     display: none;
     align-items: center;
@@ -94,6 +94,10 @@ body {
     @media (max-width: 991px) {
       display: flex;
       order: -1; // Posiziona all'inizio
+    }
+    
+    .icon {
+      transform: scale(1);
     }
     
     &:hover {

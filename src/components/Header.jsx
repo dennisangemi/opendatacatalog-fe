@@ -42,7 +42,7 @@ export default function Header() {
                   aria-expanded={isNavOpen}
                   aria-label="Apri/chiudi menu di navigazione"
                 >
-                  <Icon icon={isNavOpen ? "it-close" : "it-burger"} color="primary" size="lg" />
+                  <Icon icon={isNavOpen ? "it-close" : "it-burger"} color="primary" size="sm" />
                 </button>
                 <div className="it-brand-wrapper">
                   <Link to="/">
