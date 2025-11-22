@@ -347,7 +347,24 @@ export default function DettaglioDataset() {
 
       {/* Sezione Dataset Correlati */}
       {relatedDatasets.length > 0 && (
-        <section className="mt-5 pt-4 border-top">
+        <section className="mt-5 pt-4 border-top d-none d-md-block">
+          <h4 className="mb-4">
+            <Icon icon="it-folder" className="me-2" />
+            Dataset correlati
+          </h4>
+          <Row>
+            {relatedDatasets.map(ds => (
+              <Col key={ds.id} md={6} lg={4} className="mb-4">
+                <DatasetCard dataset={ds} />
+              </Col>
+            ))}
+          </Row>
+        </section>
+      )}
+      
+      {/* Sezione Dataset Correlati Mobile */}
+      {relatedDatasets.length > 0 && (
+        <section className="mt-5 pt-4 d-md-none">
           <h4 className="mb-4">
             <Icon icon="it-folder" className="me-2" />
             Dataset correlati
