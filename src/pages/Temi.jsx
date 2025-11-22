@@ -70,7 +70,6 @@ export default function Temi() {
           </div>
         ) : error ? (
           <div className="alert alert-danger" role="alert">
-            <Icon icon="it-warning-circle" className="me-2" />
             {error}
           </div>
         ) : (

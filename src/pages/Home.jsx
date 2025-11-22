@@ -207,7 +207,6 @@ export default function Home() {
               </div>
             ) : error ? (
               <div className="alert alert-danger" role="alert">
-                <Icon icon="it-warning-circle" className="me-2" aria-hidden="true" />
                 {error}
               </div>
             ) : (

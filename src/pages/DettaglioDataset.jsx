@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Badge, Table, Icon, Row, Col, Accordion, AccordionHeader, AccordionBody, notify } from 'design-react-kit';
-import { fetchPackageShow, fetchDatastoreSearch } from '../api/ckan';
+import { fetchPackageShow, fetchDatastoreSearch, fetchPackageSearch } from '../api/ckan';
 import Breadcrumbs from '../components/Breadcrumbs';
+import DatasetCard from '../components/DatasetCard';
 
 export default function DettaglioDataset() {
   const { id } = useParams();
@@ -11,6 +12,7 @@ export default function DettaglioDataset() {
   const [error, setError] = useState(null);
   const [previews, setPreviews] = useState({});
   const [collapseOpen, setCollapseOpen] = useState('');
+  const [relatedDatasets, setRelatedDatasets] = useState([]);
 
   useEffect(() => {
     async function loadDataset() {
@@ -29,6 +31,22 @@ export default function DettaglioDataset() {
           });
           const previewResults = await Promise.all(previewPromises);
           setPreviews(Object.fromEntries(previewResults));
+          
+          // Carica dataset correlati se il dataset ha gruppi
+          if (res.result.groups && res.result.groups.length > 0) {
+            const firstGroup = res.result.groups[0].name;
+            const relatedRes = await fetchPackageSearch({ 
+              fq: `groups:${firstGroup}`, 
+              rows: 100 
+            });
+            
+            if (relatedRes.success && relatedRes.result.results.length > 1) {
+              // Filtra il dataset corrente e seleziona 3 casuali
+              const others = relatedRes.result.results.filter(ds => ds.name !== res.result.name);
+              const shuffled = others.sort(() => 0.5 - Math.random());
+              setRelatedDatasets(shuffled.slice(0, 3));
+            }
+          }
         }
       } catch (err) {
         setError('Errore nel caricamento del dataset');
@@ -52,8 +70,8 @@ export default function DettaglioDataset() {
       </div>
     </div>
   );
-  if (error) return <div className="alert alert-danger"><Icon icon="it-warning-circle" className="me-2" />{error}</div>;
-  if (!dataset) return <div className="alert alert-warning"><Icon icon="it-info-circle" className="me-2" />Dataset non trovato.</div>;
+  if (error) return <div className="alert alert-danger">{error}</div>;
+  if (!dataset) return <div className="alert alert-warning">Dataset non trovato.</div>;
 
   return (
     <div className="container">
@@ -72,10 +90,14 @@ export default function DettaglioDataset() {
         <p className="lead text-muted">{dataset.notes}</p>
         <div className="mt-3">
           {dataset.groups?.map(g => (
-            <Badge key={g.name} color="primary" className="me-2 mb-2">
+            <Link 
+              key={g.name} 
+              to={`/catalogo?tema=${g.name}`}
+              className="badge bg-primary text-white text-decoration-none me-2 mb-2"
+            >
               <Icon icon="it-folder" size="sm" color="white" className="me-1" />
               {g.display_name}
-            </Badge>
+            </Link>
           ))}
         </div>
       </section>
@@ -304,6 +326,23 @@ export default function DettaglioDataset() {
           </Accordion>
         </Col>
       </Row>
+
+      {/* Sezione Dataset Correlati */}
+      {relatedDatasets.length > 0 && (
+        <section className="mt-5 pt-4 border-top">
+          <h4 className="mb-4">
+            <Icon icon="it-folder" className="me-2" />
+            Dataset correlati
+          </h4>
+          <Row>
+            {relatedDatasets.map(ds => (
+              <Col key={ds.id} md={6} lg={4} className="mb-4">
+                <DatasetCard dataset={ds} />
+              </Col>
+            ))}
+          </Row>
+        </section>
+      )}
     </div>
   );
 }
