@@ -81,7 +81,7 @@ export default function Home() {
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <Row className="justify-content-center">
             <Col lg={10}>
-              <div className="text-center mb-5">
+              {/* <div className="text-center mb-5">
                 <h1 className="text-white display-4 fw-bold mb-4">
                   Cerca i dati aperti
                 </h1>
@@ -89,10 +89,30 @@ export default function Home() {
                   Consulta, ricerca e scarica i dati pubblici in formato aperto.
                   Trasparenza, partecipazione e innovazione per la città di Messina.
                 </p>
+              </div> */}
+              
+              {/* Palazzo Zanca sopra la search bar */}
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                marginBottom: '-5px',
+                position: 'relative',
+                zIndex: 10
+              }}>
+                <img 
+                  src="/zancadef.svg" 
+                  alt="Palazzo Zanca" 
+                  style={{ 
+                    height: '200px',
+                    width: 'auto',
+                    filter: 'brightness(0) invert(1)',
+                    opacity: 0.9
+                  }} 
+                />
               </div>
               
               {/* Barra di Ricerca Grande */}
-              <form onSubmit={handleSearch} className="search-bar-home">
+              <form onSubmit={handleSearch} className="search-bar-home" style={{ position: 'relative', zIndex: 10 }}>
                 <span className="search-icon d-none d-md-flex">
                   <Icon icon="it-search" color="primary" size="sm" aria-hidden="true" />
                 </span>
@@ -118,8 +138,15 @@ export default function Home() {
                 </button>
               </form>
               
+              {/* Testo introduttivo */}
+              <div className="text-center mt-4 mb-4" style={{ position: 'relative', zIndex: 10 }}>
+                <p className="lead text-white opacity-90 mb-0">
+                  Ricerca, consulta e scarica i dati pubblici in formato aperto.
+                </p>
+              </div>
+              
               {/* Link rapidi */}
-              <div className="text-center mt-5 mb-5 quick-links-container d-none d-md-block">
+              <div className="text-center mt-5 mb-5 quick-links-container d-none d-md-block" style={{ position: 'relative', zIndex: 10 }}>
                 <Link to="/catalogo" className="btn btn-outline-light btn-lg me-3 px-4 py-3 quick-link-btn">
                   <Icon icon="it-list" color="white" size="sm" className="me-2" aria-hidden="true" />
                   <span className="fw-semibold">Sfoglia il catalogo</span>
@@ -131,7 +158,7 @@ export default function Home() {
               </div>
 
               {/* Stats inline nella hero */}
-              <div className="mt-5 pt-5">
+              <div className="mt-5 pt-5" style={{ position: 'relative', zIndex: 10 }}>
                 <Row className="g-4 justify-content-center">
                   <Col xs="auto">
                     <div className="text-center px-3">
