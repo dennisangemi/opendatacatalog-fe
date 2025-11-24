@@ -252,11 +252,27 @@ export default function DettaglioDataset() {
                   onToggle={() => setCollapseOpen(collapseOpen === res.id ? '' : res.id)}
                 >
                   <div className="d-flex justify-content-between align-items-center w-100">
-                    <div className="d-flex align-items-center">
-                      <Icon icon="it-file" className="me-2" />
-                      <strong>{res.name || `Risorsa ${index + 1}`}</strong>
+                    <div className="d-flex align-items-center flex-wrap gap-2">
+                      <div className="d-flex align-items-center">
+                        <Icon icon="it-file" className="me-2" />
+                        <strong>{res.name || `Risorsa ${index + 1}`}</strong>
+                      </div>
+                      <Badge color="secondary" className="text-uppercase">{res.format}</Badge>
+                      {res.datastore_active && (
+                        <>
+                          <Badge color="primary" className="d-flex align-items-center gap-1">
+                            <Icon icon="it-code-circle" size="xs" color="white" />
+                            API
+                          </Badge>
+                          {res.format?.toUpperCase() !== 'CSV' && (
+                            <Badge color="success" className="text-uppercase">CSV</Badge>
+                          )}
+                          <Badge color="success" className="text-uppercase">TSV</Badge>
+                          <Badge color="success" className="text-uppercase">JSON</Badge>
+                          <Badge color="success" className="text-uppercase">XML</Badge>
+                        </>
+                      )}
                     </div>
-                    <Badge color="secondary" className="ms-2">{res.format}</Badge>
                   </div>
                 </AccordionHeader>
                 

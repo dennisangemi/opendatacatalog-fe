@@ -150,9 +150,58 @@ export default function DettaglioRisorsa() {
           <div className="d-flex align-items-center justify-content-between">
             <div>
               <h2 className="mb-2">{resource?.name || 'Risorsa'}</h2>
-              <Badge color="secondary">
-                {resource?.format || 'N/D'}
-              </Badge>
+              <div className="d-flex gap-2 flex-wrap align-items-center">
+                <Badge color="secondary" className="text-uppercase">
+                  {resource?.format || 'N/D'}
+                </Badge>
+                {data && (
+                  <>
+                    <Badge 
+                      color="primary" 
+                      className="d-flex align-items-center gap-1"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => document.getElementById('api-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                    >
+                      <Icon icon="it-code-circle" size="xs" color="white" />
+                      API
+                    </Badge>
+                    {resource?.format?.toUpperCase() !== 'CSV' && (
+                      <Badge 
+                        color="success" 
+                        className="text-uppercase"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => document.getElementById('export-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                      >
+                        CSV
+                      </Badge>
+                    )}
+                    <Badge 
+                      color="success" 
+                      className="text-uppercase"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => document.getElementById('export-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                    >
+                      TSV
+                    </Badge>
+                    <Badge 
+                      color="success" 
+                      className="text-uppercase"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => document.getElementById('export-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                    >
+                      JSON
+                    </Badge>
+                    <Badge 
+                      color="success" 
+                      className="text-uppercase"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => document.getElementById('export-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                    >
+                      XML
+                    </Badge>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </Col>
@@ -313,14 +362,14 @@ export default function DettaglioRisorsa() {
 
               </section>
 
-              {/* Info Risorsa e Endpoint */}
+              {/* Info Risorsa */}
               <section className="mb-5">
                 <h5 className="mb-3">
                   <Icon icon="it-info-circle" size="sm" className="me-2" />
                   Informazioni
                 </h5>
                 
-                <Card className="shadow-sm border-0 mb-3">
+                <Card className="shadow-sm border-0">
                   <CardBody className="p-4">
                     <Row className="g-4">
                       <Col md={6}>
@@ -345,29 +394,33 @@ export default function DettaglioRisorsa() {
                           </div>
                         </div>
                       </Col>
+                      {resource?.created && (
+                        <Col md={6}>
+                          <div className="d-flex align-items-start">
+                            <Icon icon="it-calendar" size="sm" color="primary" className="me-3 mt-1" />
+                            <div className="flex-grow-1">
+                              <div className="text-uppercase text-muted fw-semibold mb-2" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
+                                Data Creazione
+                              </div>
+                              <div className="small">{new Date(resource.created).toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+                            </div>
+                          </div>
+                        </Col>
+                      )}
+                      {resource?.last_modified && (
+                        <Col md={6}>
+                          <div className="d-flex align-items-start">
+                            <Icon icon="it-refresh" size="sm" color="primary" className="me-3 mt-1" />
+                            <div className="flex-grow-1">
+                              <div className="text-uppercase text-muted fw-semibold mb-2" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
+                                Ultima Modifica
+                              </div>
+                              <div className="small">{new Date(resource.last_modified).toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                            </div>
+                          </div>
+                        </Col>
+                      )}
                     </Row>
-                  </CardBody>
-                </Card>
-                
-                <Card className="shadow-sm border-0">
-                  <CardBody className="p-4">
-                    <div className="d-flex align-items-start">
-                      <Icon icon="it-link" size="sm" color="primary" className="me-3 mt-1" />
-                      <div className="flex-grow-1">
-                        <div className="text-uppercase text-muted fw-semibold mb-3" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
-                          Endpoint API
-                        </div>
-                        <div className="d-flex flex-column flex-lg-row align-items-lg-center gap-2">
-                          <code className="flex-grow-1 text-break small bg-light p-3 rounded mb-0">
-                            {apiEndpoint}
-                          </code>
-                          <Button color="primary" size="sm" className="flex-shrink-0" onClick={handleCopy}>
-                            <Icon icon="it-copy" color="white" size="sm" className="me-1" />
-                            Copia URL
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
                   </CardBody>
                 </Card>
               </section>
@@ -420,62 +473,415 @@ export default function DettaglioRisorsa() {
               </section>
 
               {/* Esporta */}
-              <section className="mb-5">
+              <section className="mb-5" id="export-section">
                 <h5 className="mb-3">
                   <Icon icon="it-download" size="sm" className="me-2" />
-                  Esporta Dati
+                  Esporta i dati
                 </h5>
                 
                 <Row className="g-3">
-                  <Col md={6}>
+                  <Col md={6} lg={3}>
                     <Card className="shadow-sm border-0 h-100">
                       <CardBody className="p-4">
                         <div className="d-flex align-items-start mb-3">
                           <Icon icon="it-file" size="sm" color="primary" className="me-3 mt-1" />
                           <div className="flex-grow-1">
-                            <CardTitle tag="h6" className="fw-bold mb-2">Formato CSV</CardTitle>
+                            <CardTitle tag="h6" className="fw-bold mb-2">CSV</CardTitle>
                             <CardText className="small text-muted mb-3">
-                              Download in formato Comma-Separated Values, compatibile con Excel e altri fogli di calcolo
+                              Comma-Separated Values con BOM, compatibile con Excel
                             </CardText>
                           </div>
                         </div>
-                        <a 
-                          href={`${CKAN_BASE_URL.replace('/api/3/action', '')}/datastore/dump/${id}?format=csv&bom=true`}
-                          className="btn btn-primary w-100"
-                          target="_blank" 
-                          rel="noreferrer"
-                        >
-                          <Icon icon="it-download" size="sm" color="white" className="me-2" aria-hidden="true" />
-                          Scarica CSV
-                        </a>
+                        <div className="d-flex flex-column gap-2">
+                          <a 
+                            href={`/datastore/dump/${id}?bom=true`}
+                            className="btn btn-primary w-100"
+                            target="_blank" 
+                            rel="noreferrer"
+                          >
+                            <Icon icon="it-download" size="sm" color="white" className="me-2" aria-hidden="true" />
+                            Scarica CSV
+                          </a>
+                          <Button 
+                            color="primary" 
+                            outline 
+                            size="sm"
+                            className="w-100"
+                            onClick={() => {
+                              const url = `${window.location.origin}/datastore/dump/${id}?bom=true`;
+                              navigator.clipboard.writeText(url);
+                              notify('URL copiato!', 'L\'URL del file CSV è stato copiato negli appunti.', { state: 'success', duration: 3000 });
+                            }}
+                          >
+                            <Icon icon="it-copy" size="sm" className="me-2" />
+                            Copia URL
+                          </Button>
+                        </div>
                       </CardBody>
                     </Card>
                   </Col>
-                  <Col md={6}>
+                  <Col md={6} lg={3}>
+                    <Card className="shadow-sm border-0 h-100">
+                      <CardBody className="p-4">
+                        <div className="d-flex align-items-start mb-3">
+                          <Icon icon="it-file" size="sm" color="primary" className="me-3 mt-1" />
+                          <div className="flex-grow-1">
+                            <CardTitle tag="h6" className="fw-bold mb-2">TSV</CardTitle>
+                            <CardText className="small text-muted mb-3">
+                              Tab-Separated Values con BOM, alternativa a CSV
+                            </CardText>
+                          </div>
+                        </div>
+                        <div className="d-flex flex-column gap-2">
+                          <a 
+                            href={`/datastore/dump/${id}?format=tsv&bom=true`}
+                            className="btn btn-primary w-100"
+                            target="_blank" 
+                            rel="noreferrer"
+                          >
+                            <Icon icon="it-download" size="sm" color="white" className="me-2" aria-hidden="true" />
+                            Scarica TSV
+                          </a>
+                          <Button 
+                            color="primary" 
+                            outline 
+                            size="sm"
+                            className="w-100"
+                            onClick={() => {
+                              const url = `${window.location.origin}/datastore/dump/${id}?format=tsv&bom=true`;
+                              navigator.clipboard.writeText(url);
+                              notify('URL copiato!', 'L\'URL del file TSV è stato copiato negli appunti.', { state: 'success', duration: 3000 });
+                            }}
+                          >
+                            <Icon icon="it-copy" size="sm" className="me-2" />
+                            Copia URL
+                          </Button>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col md={6} lg={3}>
                     <Card className="shadow-sm border-0 h-100">
                       <CardBody className="p-4">
                         <div className="d-flex align-items-start mb-3">
                           <Icon icon="it-code-circle" size="sm" color="primary" className="me-3 mt-1" />
                           <div className="flex-grow-1">
-                            <CardTitle tag="h6" className="fw-bold mb-2">Formato JSON</CardTitle>
+                            <CardTitle tag="h6" className="fw-bold mb-2">JSON</CardTitle>
                             <CardText className="small text-muted mb-3">
-                              Download in formato JavaScript Object Notation, ideale per applicazioni e API
+                              JavaScript Object Notation, ideale per applicazioni e API
                             </CardText>
                           </div>
                         </div>
-                        <a 
-                          href={`${CKAN_BASE_URL.replace('/api/3/action', '')}/datastore/dump/${id}?format=json`}
-                          className="btn btn-primary w-100"
-                          target="_blank" 
-                          rel="noreferrer"
-                        >
-                          <Icon icon="it-download" size="sm" color="white" className="me-2" aria-hidden="true" />
-                          Scarica JSON
-                        </a>
+                        <div className="d-flex flex-column gap-2">
+                          <a 
+                            href={`/datastore/dump/${id}?format=json`}
+                            className="btn btn-primary w-100"
+                            target="_blank" 
+                            rel="noreferrer"
+                          >
+                            <Icon icon="it-download" size="sm" color="white" className="me-2" aria-hidden="true" />
+                            Scarica JSON
+                          </a>
+                          <Button 
+                            color="primary" 
+                            outline 
+                            size="sm"
+                            className="w-100"
+                            onClick={() => {
+                              const url = `${window.location.origin}/datastore/dump/${id}?format=json`;
+                              navigator.clipboard.writeText(url);
+                              notify('URL copiato!', 'L\'URL del file JSON è stato copiato negli appunti.', { state: 'success', duration: 3000 });
+                            }}
+                          >
+                            <Icon icon="it-copy" size="sm" className="me-2" />
+                            Copia URL
+                          </Button>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col md={6} lg={3}>
+                    <Card className="shadow-sm border-0 h-100">
+                      <CardBody className="p-4">
+                        <div className="d-flex align-items-start mb-3">
+                          <Icon icon="it-code-circle" size="sm" color="primary" className="me-3 mt-1" />
+                          <div className="flex-grow-1">
+                            <CardTitle tag="h6" className="fw-bold mb-2">XML</CardTitle>
+                            <CardText className="small text-muted mb-3">
+                              Extensible Markup Language, standard per lo scambio dati
+                            </CardText>
+                          </div>
+                        </div>
+                        <div className="d-flex flex-column gap-2">
+                          <a 
+                            href={`/datastore/dump/${id}?format=xml`}
+                            className="btn btn-primary w-100"
+                            target="_blank" 
+                            rel="noreferrer"
+                          >
+                            <Icon icon="it-download" size="sm" color="white" className="me-2" aria-hidden="true" />
+                            Scarica XML
+                          </a>
+                          <Button 
+                            color="primary" 
+                            outline 
+                            size="sm"
+                            className="w-100"
+                            onClick={() => {
+                              const url = `${window.location.origin}/datastore/dump/${id}?format=xml`;
+                              navigator.clipboard.writeText(url);
+                              notify('URL copiato!', 'L\'URL del file XML è stato copiato negli appunti.', { state: 'success', duration: 3000 });
+                            }}
+                          >
+                            <Icon icon="it-copy" size="sm" className="me-2" />
+                            Copia URL
+                          </Button>
+                        </div>
                       </CardBody>
                     </Card>
                   </Col>
                 </Row>
+              </section>
+
+              {/* API */}
+              <section className="mb-5" id="api-section">
+                <h5 className="mb-3">
+                  <Icon icon="it-code-circle" size="sm" className="me-2" />
+                  API
+                </h5>
+                
+                <Card className="shadow-sm border-0 mb-3">
+                  <CardBody className="p-4">
+                    <p className="mb-4">
+                      Accedi ai dati di questa risorsa tramite API. Puoi cercare, filtrare e interrogare i dati senza scaricare l'intero file.
+                    </p>
+
+                    {/* Endpoint base */}
+                    <div className="mb-4">
+                      <h6 className="fw-bold mb-3">
+                        <Icon icon="it-link" size="xs" className="me-2" />
+                        Endpoint base
+                      </h6>
+                      <div className="d-flex align-items-center gap-2 mb-2">
+                        <code className="flex-grow-1 bg-light p-3 rounded text-break small mb-0">
+                          GET {apiEndpoint}
+                        </code>
+                        <Button color="primary" outline size="sm" onClick={handleCopy}>
+                          <Icon icon="it-copy" size="sm" className="me-1" />
+                          Copia
+                        </Button>
+                      </div>
+                      <small className="text-muted">Recupera i primi 100 record della risorsa</small>
+                    </div>
+
+                    {/* Esempi di query */}
+                    <div className="mb-4">
+                      <h6 className="fw-bold mb-3">
+                        <Icon icon="it-settings" size="xs" className="me-2" />
+                        Parametri disponibili
+                      </h6>
+                      <div className="table-responsive">
+                        <Table size="sm" className="mb-0">
+                          <thead className="table-light">
+                            <tr>
+                              <th style={{ width: '20%' }}>Parametro</th>
+                              <th style={{ width: '15%' }}>Tipo</th>
+                              <th style={{ width: '65%' }}>Descrizione</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><code className="small">resource_id</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">string</Badge></td>
+                              <td>ID o alias della risorsa da interrogare (obbligatorio)</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">limit</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">int</Badge></td>
+                              <td>Numero massimo di record da restituire (default: 100, max: 32000)</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">offset</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">int</Badge></td>
+                              <td>Numero di record da saltare per la paginazione</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">fields</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">string</Badge></td>
+                              <td>Campi da restituire, separati da virgola (es: campo1,campo2)</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">filters</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">json</Badge></td>
+                              <td>Filtri di uguaglianza (es: {`{"campo": "valore", "campo2": "valore2"}`})</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">q</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">string/json</Badge></td>
+                              <td>Ricerca full-text: stringa per cercare in tutti i campi o JSON per cercare in campi specifici</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">full_text</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">string</Badge></td>
+                              <td>Ricerca full-text su tutti i campi (alternativa a q come stringa)</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">plain</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">bool</Badge></td>
+                              <td>Tratta la query come testo semplice (default: true)</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">language</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">string</Badge></td>
+                              <td>Lingua della ricerca full-text (default: english)</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">sort</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">string</Badge></td>
+                              <td>Ordinamento per campo (es: "campo asc, campo2 desc")</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">distinct</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">bool</Badge></td>
+                              <td>Restituisce solo righe distinte (default: false)</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">include_total</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">bool</Badge></td>
+                              <td>Includi il conteggio totale dei record (default: true)</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">total_estimation_threshold</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">int</Badge></td>
+                              <td>Soglia sopra la quale viene restituita una stima del totale invece del conteggio preciso</td>
+                            </tr>
+                            <tr>
+                              <td><code className="small">records_format</code></td>
+                              <td><Badge color="secondary" className="font-monospace small">string</Badge></td>
+                              <td>Formato dei record: objects (default), lists, csv, tsv</td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
+                    </div>
+
+                    {/* Esempi pratici */}
+                    <div>
+                      <h6 className="fw-bold mb-3">
+                        <Icon icon="it-bookmark" size="xs" className="me-2" />
+                        Esempi di utilizzo
+                      </h6>
+                      
+                      {/* Esempio 1: Limit */}
+                      <Card className="bg-light border-0 mb-3">
+                        <CardBody className="p-3">
+                          <div className="d-flex justify-content-between align-items-start mb-2">
+                            <strong className="small">Limitare i risultati a 10 record</strong>
+                            <Button 
+                              color="primary" 
+                              size="sm" 
+                              outline
+                              onClick={() => {
+                                const url = `${apiEndpoint}&limit=10`;
+                                window.open(url, '_blank');
+                              }}
+                            >
+                              <Icon icon="it-external-link" size="xs" className="me-1" />
+                              Prova
+                            </Button>
+                          </div>
+                          <code className="d-block small text-break">
+                            {apiEndpoint}&limit=10
+                          </code>
+                        </CardBody>
+                      </Card>
+
+                      {/* Esempio 2: Offset e paginazione */}
+                      <Card className="bg-light border-0 mb-3">
+                        <CardBody className="p-3">
+                          <div className="d-flex justify-content-between align-items-start mb-2">
+                            <strong className="small">Paginazione: seconda pagina (record 11-20)</strong>
+                            <Button 
+                              color="primary" 
+                              size="sm" 
+                              outline
+                              onClick={() => {
+                                const url = `${apiEndpoint}&limit=10&offset=10`;
+                                window.open(url, '_blank');
+                              }}
+                            >
+                              <Icon icon="it-external-link" size="xs" className="me-1" />
+                              Prova
+                            </Button>
+                          </div>
+                          <code className="d-block small text-break">
+                            {apiEndpoint}&limit=10&offset=10
+                          </code>
+                        </CardBody>
+                      </Card>
+
+                      {/* Esempio 3: Campi specifici */}
+                      {data.fields && data.fields.length > 2 && (
+                        <Card className="bg-light border-0 mb-3">
+                          <CardBody className="p-3">
+                            <div className="d-flex justify-content-between align-items-start mb-2">
+                              <strong className="small">Selezionare solo i primi 2 campi</strong>
+                              <Button 
+                                color="primary" 
+                                size="sm" 
+                                outline
+                                onClick={() => {
+                                  const fields = data.fields.slice(1, 3).map(f => f.id).join(',');
+                                  const url = `${apiEndpoint}&fields=${fields}&limit=5`;
+                                  window.open(url, '_blank');
+                                }}
+                              >
+                                <Icon icon="it-external-link" size="xs" className="me-1" />
+                                Prova
+                              </Button>
+                            </div>
+                            <code className="d-block small text-break">
+                              {apiEndpoint}&fields={data.fields.slice(1, 3).map(f => f.id).join(',')}&limit=5
+                            </code>
+                          </CardBody>
+                        </Card>
+                      )}
+
+                      {/* Esempio 4: Ordinamento */}
+                      {data.fields && data.fields.length > 1 && (
+                        <Card className="bg-light border-0 mb-3">
+                          <CardBody className="p-3">
+                            <div className="d-flex justify-content-between align-items-start mb-2">
+                              <strong className="small">Ordinare per {data.fields[1].id} (decrescente)</strong>
+                              <Button 
+                                color="primary" 
+                                size="sm" 
+                                outline
+                                onClick={() => {
+                                  const url = `${apiEndpoint}&sort=${encodeURIComponent(data.fields[1].id + ' desc')}&limit=10`;
+                                  window.open(url, '_blank');
+                                }}
+                              >
+                                <Icon icon="it-external-link" size="xs" className="me-1" />
+                                Prova
+                              </Button>
+                            </div>
+                            <code className="d-block small text-break">
+                              {apiEndpoint}&sort={data.fields[1].id}%20desc&limit=10
+                            </code>
+                          </CardBody>
+                        </Card>
+                      )}
+
+                      <div className="alert alert-info mb-0" role="alert">
+                        <strong>Nota:</strong> Tutti gli esempi aprono la risposta JSON in una nuova scheda. Per maggiori dettagli consulta la{' '}
+                        <a href="https://docs.ckan.org/en/2.10/maintaining/datastore.html#the-data-api" target="_blank" rel="noreferrer" className="alert-link">
+                          documentazione ufficiale
+                        </a>.
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
               </section>
             </>
           )}

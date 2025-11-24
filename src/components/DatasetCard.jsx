@@ -78,11 +78,26 @@ export default function DatasetCard({ dataset }) {
                 <Badge 
                   key={idx}
                   color="secondary"
-                  className="font-monospace px-2 py-1"
+                  className="font-monospace px-2 py-1 text-uppercase"
                 >
                   {format}
                 </Badge>
               ))}
+              {/* Mostra badge API e formati DataStore se almeno una risorsa ha datastore_active */}
+              {dataset.resources.some(r => r.datastore_active) && (
+                <>
+                  <Badge color="primary" className="d-flex align-items-center gap-1 px-2 py-1">
+                    <Icon icon="it-code-circle" size="xs" color="white" />
+                    API
+                  </Badge>
+                  {!dataset.resources.some(r => r.format?.toUpperCase() === 'CSV') && (
+                    <Badge color="success" className="text-uppercase px-2 py-1">CSV</Badge>
+                  )}
+                  <Badge color="success" className="text-uppercase px-2 py-1">TSV</Badge>
+                  <Badge color="success" className="text-uppercase px-2 py-1">JSON</Badge>
+                  <Badge color="success" className="text-uppercase px-2 py-1">XML</Badge>
+                </>
+              )}
             </div>
           </div>
         )}
