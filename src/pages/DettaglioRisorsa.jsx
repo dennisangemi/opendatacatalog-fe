@@ -151,7 +151,12 @@ export default function DettaglioRisorsa() {
             <div>
               <h2 className="mb-2">{resource?.name || 'Risorsa'}</h2>
               <div className="d-flex gap-2 flex-wrap align-items-center">
-                <Badge color="secondary" className="text-uppercase">
+                <Badge 
+                  color="secondary" 
+                  className="text-uppercase"
+                  style={{ cursor: data ? 'pointer' : 'default' }}
+                  onClick={() => data && document.getElementById('export-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                >
                   {resource?.format || 'N/D'}
                 </Badge>
                 {data && (
