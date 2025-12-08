@@ -59,9 +59,10 @@ export default function DatasetCard({ dataset }) {
           display: '-webkit-box', 
           WebkitLineClamp: 3, 
           WebkitBoxOrient: 'vertical',
-          minHeight: '4.5em',
+          maxHeight: '4.5em',
           fontSize: '0.9rem',
-          lineHeight: '1.5'
+          lineHeight: '1.5em',
+          wordBreak: 'break-word'
         }}>
           {dataset.notes || 'Nessuna descrizione disponibile'}
         </CardText>
@@ -74,15 +75,6 @@ export default function DatasetCard({ dataset }) {
                 <Icon icon="it-file" color="primary" size="xs" className="me-1" aria-hidden="true" />
                 Formati:
               </small>
-              {[...new Set(dataset.resources.map(r => r.format).filter(Boolean))].slice(0, 4).map((format, idx) => (
-                <Badge 
-                  key={idx}
-                  color="secondary"
-                  className="font-monospace px-2 py-1 text-uppercase"
-                >
-                  {format}
-                </Badge>
-              ))}
               {/* Mostra badge API e formati DataStore se almeno una risorsa ha datastore_active */}
               {dataset.resources.some(r => r.datastore_active) && (
                 <>
@@ -98,6 +90,18 @@ export default function DatasetCard({ dataset }) {
                   <Badge color="success" className="text-uppercase px-2 py-1">XML</Badge>
                 </>
               )}
+              {/* Mostra formati originali solo se non sono già nei formati API */}
+              {[...new Set(dataset.resources.map(r => r.format).filter(Boolean))].filter(format => 
+                !dataset.resources.some(r => r.datastore_active) || !['CSV', 'TSV', 'JSON', 'XML'].includes(format?.toUpperCase())
+              ).slice(0, 4).map((format, idx) => (
+                <Badge 
+                  key={idx}
+                  color="secondary"
+                  className="font-monospace px-2 py-1 text-uppercase"
+                >
+                  {format}
+                </Badge>
+              ))}
             </div>
           </div>
         )}

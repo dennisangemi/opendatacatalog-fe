@@ -31,7 +31,21 @@ export default function DettaglioDataset() {
             }
           });
           const previewResults = await Promise.all(previewPromises);
-          setPreviews(Object.fromEntries(previewResults));
+          const previewsData = Object.fromEntries(previewResults);
+          setPreviews(previewsData);
+          
+          // Logica di espansione automatica
+          const resources = res.result.resources;
+          if (resources.length === 1) {
+            // Se c'è una sola risorsa, espandila
+            setCollapseOpen(resources[0].id);
+          } else if (resources.length === 2) {
+            // Se ci sono due risorse, espandi quella con anteprima dati attiva
+            const resourceWithPreview = resources.find(r => r.datastore_active && previewsData[r.id]);
+            if (resourceWithPreview) {
+              setCollapseOpen(resourceWithPreview.id);
+            }
+          }
           
           // Carica dataset correlati se il dataset ha gruppi
           if (res.result.groups && res.result.groups.length > 0) {
@@ -257,7 +271,10 @@ export default function DettaglioDataset() {
                         <Icon icon="it-file" className="me-2" />
                         <strong>{res.name || `Risorsa ${index + 1}`}</strong>
                       </div>
-                      <Badge color="secondary" className="text-uppercase">{res.format}</Badge>
+                      {/* Mostra il badge del formato originale solo se non è duplicato nei formati API */}
+                      {(!res.datastore_active || !['CSV', 'TSV', 'JSON', 'XML'].includes(res.format?.toUpperCase())) && (
+                        <Badge color="secondary" className="text-uppercase">{res.format}</Badge>
+                      )}
                       {res.datastore_active && (
                         <>
                           <Badge color="primary" className="d-flex align-items-center gap-1">
