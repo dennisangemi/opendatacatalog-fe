@@ -5,6 +5,7 @@ import {
   Table, Button, Badge, Icon, 
   Container, Row, Col, Input, FormGroup, Label, notify
 } from 'design-react-kit';
+import ReactMarkdown from 'react-markdown';
 import { fetchDatastoreSearch, fetchResourceShow, fetchPackageShow } from '../api/ckan';
 import { CKAN_BASE_URL } from '../config';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -211,6 +212,15 @@ export default function DettaglioRisorsa() {
           </div>
         </Col>
       </Row>
+
+      {/* Descrizione */}
+      {resource?.description && (
+        <section className="py-4">
+          <div className="markdown-content">
+            <ReactMarkdown>{resource.description}</ReactMarkdown>
+          </div>
+        </section>
+      )}
 
       {/* Sezioni */}
       <Row>
