@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Badge, Table, Icon, Row, Col, Accordion, AccordionHeader, AccordionBody, notify } from 'design-react-kit';
-import { fetchPackageShow, fetchDatastoreSearch, fetchPackageSearch } from '../api/ckan';
+import { fetchPackageShow, fetchDatastoreSearch, fetchPackageSearch, enrichDatasetsWithOrgDetails } from '../api/ckan';
 import Breadcrumbs from '../components/Breadcrumbs';
 import DatasetCard from '../components/DatasetCard';
 import ReactMarkdown from 'react-markdown';
@@ -59,7 +59,10 @@ export default function DettaglioDataset() {
               // Filtra il dataset corrente e seleziona 3 casuali
               const others = relatedRes.result.results.filter(ds => ds.name !== res.result.name);
               const shuffled = others.sort(() => 0.5 - Math.random());
-              setRelatedDatasets(shuffled.slice(0, 3));
+              const selectedDatasets = shuffled.slice(0, 3);
+              // Arricchisci i dataset con i dettagli completi delle organizzazioni
+              const enrichedDatasets = await enrichDatasetsWithOrgDetails(selectedDatasets);
+              setRelatedDatasets(enrichedDatasets);
             }
           }
         }
@@ -383,7 +386,7 @@ export default function DettaglioDataset() {
         <section className="mt-5 pt-4 border-top d-none d-md-block">
           <h4 className="mb-4">
             <Icon icon="it-folder" className="me-2" />
-            Dataset correlati
+            Ti potrebbe interessare anche
           </h4>
           <Row>
             {relatedDatasets.map(ds => (
@@ -400,7 +403,7 @@ export default function DettaglioDataset() {
         <section className="mt-5 pt-4 d-md-none">
           <h4 className="mb-4">
             <Icon icon="it-folder" className="me-2" />
-            Dataset correlati
+            Ti potrebbe interessare anche
           </h4>
           <Row>
             {relatedDatasets.map(ds => (
