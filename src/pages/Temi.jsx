@@ -44,10 +44,10 @@ export default function Temi() {
     <div className="container">
       {/* Page Header - Sempre visibile */}
       <section className="py-4 border-bottom">
-        <h2 className="mb-2">
+        <h1 className="mb-2" style={{ fontSize: '2rem' }}>
           <Icon icon="it-folder" className="me-2" />
           Temi e Categorie
-        </h2>
+        </h1>
         <p className="text-muted">
           {loading ? (
             'Caricamento temi in corso...'

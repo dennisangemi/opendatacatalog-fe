@@ -11,7 +11,7 @@ export default function DatasetCard({ dataset }) {
     <Card spacing className="card-bg shadow-sm h-100 d-flex flex-column">
       <CardBody className="d-flex flex-column flex-grow-1 p-4">
         {/* Titolo Dataset */}
-        <CardTitle tag="h5" className="mb-3">
+        <CardTitle tag="h3" className="mb-3" style={{ fontSize: '1.25rem', fontWeight: 500 }}>
           <Link 
             to={`/dataset/${dataset.name}`} 
             className="text-decoration-none"
@@ -173,7 +173,11 @@ export default function DatasetCard({ dataset }) {
                     </div>
                   </div>
                 )}
-                <span className="text-truncate text-muted small flex-grow-1" title={dataset.organization.title}>
+                <span 
+                  className="text-truncate small flex-grow-1" 
+                  title={dataset.organization.title}
+                  style={{ color: '#495057' }}
+                >
                   {dataset.organization.title}
                 </span>
               </div>

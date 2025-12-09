@@ -185,10 +185,10 @@ export default function Catalogo() {
     <div className="container">
       {/* Page Header */}
       <section className="py-4">
-        <h2 className="mb-2">
+        <h1 className="mb-2" style={{ fontSize: '2rem' }}>
           <Icon icon="it-file" className="me-2" />
           Catalogo Dataset
-        </h2>
+        </h1>
         <p className="text-muted">
           Elenco e ricerca dei dataset pubblici del Comune di Messina
         </p>
@@ -196,7 +196,7 @@ export default function Catalogo() {
 
       {/* Search and Filters */}
       <section className="py-4 bg-light rounded-3 my-4 border">
-        <Form className="px-4 py-3" onSubmit={handleSearch}>
+        <Form role="search" className="px-4 py-3" onSubmit={handleSearch}>
           {/* Search Bar */}
           <Row className="g-3 pb-4 mb-4">
             <Col xs={12}>
@@ -319,6 +319,11 @@ export default function Catalogo() {
           </div>
         ) : (
           <>
+            {/* Regione aria-live per accessibilità - annuncia risultati */}
+            <div aria-live="polite" aria-atomic="true" className="visually-hidden">
+              {totalDatasets === 0 ? 'Nessun dataset trovato' : `${totalDatasets} dataset ${totalDatasets === 1 ? 'trovato' : 'trovati'}`}
+            </div>
+            
             <div className="d-flex justify-content-between align-items-center mb-3">
               <p className="text-muted mb-0">
                 <strong>{datasets.length}</strong> di <strong>{totalDatasets}</strong> dataset

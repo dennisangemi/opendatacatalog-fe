@@ -16,7 +16,7 @@ export default function Router() {
     <BrowserRouter>
       <ScrollToTop />
       <Header />
-      <main className="main-content">
+      <main id="main-content" className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/catalogo" element={<Catalogo />} />

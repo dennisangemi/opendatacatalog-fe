@@ -107,7 +107,7 @@ export default function Footer() {
         <div className="container">
           <ul className="it-footer-small-prints-list list-inline mb-0 d-flex flex-column flex-md-row">
             <li className="list-inline-item">
-              <span className="text-muted">© {new Date().getFullYear()} Comune di Messina</span>
+              <span className="footer-copyright-text">© {new Date().getFullYear()} Comune di Messina</span>
             </li>
             <li className="list-inline-item">
               <a href={ACCESSIBILITY_DECLARATION_URL} target="_blank" rel="noreferrer">

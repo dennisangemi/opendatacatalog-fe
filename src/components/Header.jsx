@@ -13,6 +13,11 @@ export default function Header() {
 
   return (
     <header className="it-header-wrapper">
+        {/* Skip Link per accessibilità */}
+        <a href="#main-content" className="skip-link">
+          Salta al contenuto principale
+        </a>
+        
         {/* Header Slim */}
         <div className="it-header-slim-wrapper">
           <div className="container">

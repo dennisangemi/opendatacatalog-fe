@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Accessibilità WCAG (Strict Mode) - 09/12/2025</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #0066cc; margin-bottom: 10px; font-size: 32px; }
+        .subtitle { color: #666; margin-bottom: 10px; font-size: 16px; }
+        .strict-badge { display: inline-block; background: #d32f2f; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-bottom: 20px; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 30px 0; }
+        .stat-card { padding: 20px; border-radius: 6px; text-align: center; }
+        .stat-card.critical { background: #ffebee; border-left: 4px solid #c62828; }
+        .stat-card.serious { background: #fff3e0; border-left: 4px solid #f57c00; }
+        .stat-card.moderate { background: #fffde7; border-left: 4px solid #fbc02d; }
+        .stat-card.minor { background: #e8f5e9; border-left: 4px solid #66bb6a; }
+        .stat-card.incomplete { background: #e3f2fd; border-left: 4px solid #1976d2; }
+        .stat-number { font-size: 48px; font-weight: bold; margin-bottom: 5px; }
+        .stat-label { font-size: 14px; color: #666; text-transform: uppercase; }
+        .threshold-warning { background: #fff3e0; border-left: 4px solid #f57c00; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .threshold-warning strong { color: #f57c00; }
+        .page-section { margin: 40px 0; padding: 30px; background: #fafafa; border-radius: 6px; }
+        .page-title { font-size: 24px; color: #333; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #0066cc; }
+        .violation-item { background: white; border: 1px solid #ddd; border-radius: 4px; padding: 20px; margin-bottom: 15px; }
+        .violation-item.critical { border-left: 4px solid #c62828; }
+        .violation-item.serious { border-left: 4px solid #f57c00; }
+        .violation-item.moderate { border-left: 4px solid #fbc02d; }
+        .violation-item.minor { border-left: 4px solid #66bb6a; }
+        .violation-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px; }
+        .violation-title { font-size: 18px; font-weight: 600; color: #333; flex: 1; }
+        .impact-badge { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .impact-critical { background: #c62828; color: white; }
+        .impact-serious { background: #f57c00; color: white; }
+        .impact-moderate { background: #fbc02d; color: #333; }
+        .impact-minor { background: #66bb6a; color: white; }
+        .violation-description { color: #666; margin-bottom: 10px; line-height: 1.6; }
+        .help-link { color: #0066cc; text-decoration: none; }
+        .help-link:hover { text-decoration: underline; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .tag { background: #e3f2fd; color: #1976d2; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+        .tag.wcag22aa { background: #f3e5f5; color: #7b1fa2; }
+        .tag.wcag21aaa { background: #fce4ec; color: #c2185b; }
+        .tag.best-practice { background: #e0f2f1; color: #00695c; }
+        .node-item { background: #f8f9fa; padding: 12px; margin: 10px 0; border-radius: 4px; border-left: 3px solid #ddd; }
+        .node-target { font-family: 'Courier New', monospace; font-size: 13px; color: #d32f2f; margin-bottom: 8px; }
+        .node-xpath { font-family: 'Courier New', monospace; font-size: 11px; color: #666; margin-bottom: 8px; }
+        .node-html { font-family: 'Courier New', monospace; font-size: 12px; color: #666; background: white; padding: 8px; border-radius: 3px; overflow-x: auto; margin-bottom: 8px; }
+        .timestamp { color: #999; font-size: 14px; margin-top: 30px; text-align: center; }
+        .no-violations { color: #388e3c; font-size: 18px; padding: 20px; text-align: center; background: #e8f5e9; border-radius: 6px; }
+        .wcag-info { background: #e3f2fd; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .wcag-info ul { margin-left: 20px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Report Accessibilità WCAG (Strict Mode)</h1>
+        <p class="subtitle">Portale Open Data del Comune di Messina</p>
+        <span class="strict-badge">STRICT MODE: WCAG 2.0/2.1/2.2 A/AA/AAA + Best Practices</span>
+        
+        <div class="wcag-info">
+            <strong>📋 Standard testati:</strong>
+            <ul>
+                <li>WCAG 2.0 Level A, AA, AAA</li>
+                <li>WCAG 2.1 Level A, AA, AAA</li>
+                <li>WCAG 2.2 Level AA</li>
+                <li>Best Practices aggiuntive</li>
+            </ul>
+        </div>
+        
+        <div class="summary">
+            <div class="stat-card critical">
+                <div class="stat-number">0</div>
+                <div class="stat-label">🔴 Critical</div>
+            </div>
+            <div class="stat-card serious">
+                <div class="stat-number">0</div>
+                <div class="stat-label">🟠 Serious</div>
+            </div>
+            <div class="stat-card moderate">
+                <div class="stat-number">4</div>
+                <div class="stat-label">🟡 Moderate</div>
+            </div>
+            <div class="stat-card minor">
+                <div class="stat-number">0</div>
+                <div class="stat-label">🟢 Minor</div>
+            </div>
+            <div class="stat-card incomplete">
+                <div class="stat-number">18</div>
+                <div class="stat-label">⚠️ Incomplete</div>
+            </div>
+        </div>
+        
+        
+
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Home</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/</p>
+                
+                <div class="no-violations">✅ Nessuna violazione trovata su questa pagina!</div>
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 3 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet enhanced color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AAA enhanced contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast-enhanced?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Links with the same name must have a similar purpose</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure that links with the same accessible name serve a similar purpose</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Catalogo</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/catalogo</p>
+                
+                <div class="no-violations">✅ Nessuna violazione trovata su questa pagina!</div>
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 2 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Links with the same name must have a similar purpose</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure that links with the same accessible name serve a similar purpose</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Temi</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/temi</p>
+                
+                <div class="no-violations">✅ Nessuna violazione trovata su questa pagina!</div>
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 2 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Links with the same name must have a similar purpose</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure that links with the same accessible name serve a similar purpose</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Enti</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/enti</p>
+                
+                <div class="no-violations">✅ Nessuna violazione trovata su questa pagina!</div>
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 2 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Links with the same name must have a similar purpose</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure that links with the same accessible name serve a similar purpose</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Informazioni</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/informazioni</p>
+                
+                <div class="no-violations">✅ Nessuna violazione trovata su questa pagina!</div>
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 1 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Dettaglio Dataset: Unità Organizzative che ricevono fatture elettroniche</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/dataset/unita-organizzative-che-ricevono-fatture-elettroniche</p>
+                
+                <div style="margin-bottom: 10px; font-weight: 600; color: #d32f2f;">
+                    🚨 1 violazione/i trovata/e
+                  </div>
+                  
+                    <div class="violation-item moderate">
+                        <div class="violation-header">
+                            <div class="violation-title">Page should contain a level-one heading</div>
+                            <span class="impact-badge impact-moderate">moderate</span>
+                        </div>
+                        <div class="violation-description">Ensure that the page, or at least one of its frames contains a level-one heading</div>
+                        <div>
+                            <a href="https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                        <div class="tags">
+                            <span class="tag ">cat.semantics</span><span class="tag best-practice">best-practice</span>
+                        </div>
+                        <div style="margin-top: 15px; font-weight: 600;">
+                            📍 Elementi interessati: 1
+                        </div>
+                        
+                            <div class="node-item">
+                                <div class="node-target"><strong>Selettore:</strong> ["html"]</div>
+                                <div class="node-xpath"><strong>XPath:</strong> /html</div>
+                                <div class="node-html">&lt;html lang="it"&gt;</div>
+                                <div style="color: #555; font-size: 13px;">Fix all of the following:
+  Page must have a level-one heading</div>
+                            </div>
+                        
+                    </div>
+                  
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 2 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Links with the same name must have a similar purpose</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure that links with the same accessible name serve a similar purpose</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Dettaglio Risorsa: Unità Organizzative che ricevono fatture elettroniche</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/risorsa/57bd2be0-4d3d-41cd-bdb8-2f0a60d6f490</p>
+                
+                <div style="margin-bottom: 10px; font-weight: 600; color: #d32f2f;">
+                    🚨 1 violazione/i trovata/e
+                  </div>
+                  
+                    <div class="violation-item moderate">
+                        <div class="violation-header">
+                            <div class="violation-title">Page should contain a level-one heading</div>
+                            <span class="impact-badge impact-moderate">moderate</span>
+                        </div>
+                        <div class="violation-description">Ensure that the page, or at least one of its frames contains a level-one heading</div>
+                        <div>
+                            <a href="https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                        <div class="tags">
+                            <span class="tag ">cat.semantics</span><span class="tag best-practice">best-practice</span>
+                        </div>
+                        <div style="margin-top: 15px; font-weight: 600;">
+                            📍 Elementi interessati: 1
+                        </div>
+                        
+                            <div class="node-item">
+                                <div class="node-target"><strong>Selettore:</strong> ["html"]</div>
+                                <div class="node-xpath"><strong>XPath:</strong> /html</div>
+                                <div class="node-html">&lt;html lang="it"&gt;</div>
+                                <div style="color: #555; font-size: 13px;">Fix all of the following:
+  Page must have a level-one heading</div>
+                            </div>
+                        
+                    </div>
+                  
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 2 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Links with the same name must have a similar purpose</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure that links with the same accessible name serve a similar purpose</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Dettaglio Dataset: Servizi delle Unità Organizzative</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/dataset/servizi-delle-unita-organizzative</p>
+                
+                <div style="margin-bottom: 10px; font-weight: 600; color: #d32f2f;">
+                    🚨 1 violazione/i trovata/e
+                  </div>
+                  
+                    <div class="violation-item moderate">
+                        <div class="violation-header">
+                            <div class="violation-title">Page should contain a level-one heading</div>
+                            <span class="impact-badge impact-moderate">moderate</span>
+                        </div>
+                        <div class="violation-description">Ensure that the page, or at least one of its frames contains a level-one heading</div>
+                        <div>
+                            <a href="https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                        <div class="tags">
+                            <span class="tag ">cat.semantics</span><span class="tag best-practice">best-practice</span>
+                        </div>
+                        <div style="margin-top: 15px; font-weight: 600;">
+                            📍 Elementi interessati: 1
+                        </div>
+                        
+                            <div class="node-item">
+                                <div class="node-target"><strong>Selettore:</strong> ["html"]</div>
+                                <div class="node-xpath"><strong>XPath:</strong> /html</div>
+                                <div class="node-html">&lt;html lang="it"&gt;</div>
+                                <div style="color: #555; font-size: 13px;">Fix all of the following:
+  Page must have a level-one heading</div>
+                            </div>
+                        
+                    </div>
+                  
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 2 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Links with the same name must have a similar purpose</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure that links with the same accessible name serve a similar purpose</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+            <div class="page-section">
+                <h2 class="page-title">📄 Dettaglio Risorsa: Servizi delle Unità Organizzative</h2>
+                <p style="color: #666; margin-bottom: 20px;">URL: http://localhost:3000/risorsa/aa9a34a8-6e0a-4720-9275-a7b1feb4e3a0</p>
+                
+                <div style="margin-bottom: 10px; font-weight: 600; color: #d32f2f;">
+                    🚨 1 violazione/i trovata/e
+                  </div>
+                  
+                    <div class="violation-item moderate">
+                        <div class="violation-header">
+                            <div class="violation-title">Page should contain a level-one heading</div>
+                            <span class="impact-badge impact-moderate">moderate</span>
+                        </div>
+                        <div class="violation-description">Ensure that the page, or at least one of its frames contains a level-one heading</div>
+                        <div>
+                            <a href="https://dequeuniversity.com/rules/axe/4.11/page-has-heading-one?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                        <div class="tags">
+                            <span class="tag ">cat.semantics</span><span class="tag best-practice">best-practice</span>
+                        </div>
+                        <div style="margin-top: 15px; font-weight: 600;">
+                            📍 Elementi interessati: 1
+                        </div>
+                        
+                            <div class="node-item">
+                                <div class="node-target"><strong>Selettore:</strong> ["html"]</div>
+                                <div class="node-xpath"><strong>XPath:</strong> /html</div>
+                                <div class="node-html">&lt;html lang="it"&gt;</div>
+                                <div style="color: #555; font-size: 13px;">Fix all of the following:
+  Page must have a level-one heading</div>
+                            </div>
+                        
+                    </div>
+                  
+                
+                
+                  <div style="margin-top: 20px;">
+                    <div style="font-weight: 600; color: #f57c00; margin-bottom: 10px;">
+                      ⚠️ 2 test da verificare manualmente
+                    </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Elements must meet minimum color contrast ratio thresholds</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                      <div style="background: #fff3e0; padding: 12px; margin: 8px 0; border-radius: 4px; border-left: 3px solid #f57c00;">
+                        <div style="font-weight: 600; color: #f57c00;">Links with the same name must have a similar purpose</div>
+                        <div style="color: #666; font-size: 14px; margin-top: 5px;">Ensure that links with the same accessible name serve a similar purpose</div>
+                        <div style="margin-top: 5px;">
+                          <a href="https://dequeuniversity.com/rules/axe/4.11/identical-links-same-purpose?application=axeAPI" target="_blank" class="help-link">📖 Maggiori informazioni</a>
+                        </div>
+                      </div>
+                    
+                  </div>
+                
+            </div>
+        
+
+        <div class="timestamp">
+            Report generato il 09/12/2025 alle 01:05:48
+        </div>
+    </div>
+</body>
+</html>
+  

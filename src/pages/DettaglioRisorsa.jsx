@@ -150,7 +150,7 @@ export default function DettaglioRisorsa() {
         <Col lg={12}>
           <div className="d-flex align-items-center justify-content-between">
             <div>
-              <h2 className="mb-2">{resource?.name || 'Risorsa'}</h2>
+              <h1 className="mb-2" style={{ fontSize: '2rem' }}>{resource?.name || 'Risorsa'}</h1>
               <div className="d-flex gap-2 flex-wrap align-items-center">
                 <Badge 
                   color="secondary" 

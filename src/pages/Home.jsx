@@ -66,7 +66,7 @@ export default function Home() {
   return (
     <div className="homepage-wrapper">
       {/* Hero Section con Barra di Ricerca */}
-      <section className="it-hero-wrapper it-overlay it-dark hero-section-mobile" style={{ 
+      <section className="it-hero-wrapper it-overlay it-dark hero-section-mobile" style={{
         background: 'linear-gradient(135deg, #0066cc 0%, #004d99 100%)',
         minHeight: 'calc(100vh - var(--header-height, 180px))',
         display: 'flex',
@@ -81,15 +81,8 @@ export default function Home() {
         <div className="container" style={{ position: 'relative', zIndex: 2 }}>
           <Row className="justify-content-center">
             <Col lg={10}>
-              {/* <div className="text-center mb-5">
-                <h1 className="text-white display-4 fw-bold mb-4">
-                  Cerca i dati aperti
-                </h1>
-                <p className="lead text-white opacity-90 mb-0">
-                  Consulta, ricerca e scarica i dati pubblici in formato aperto.
-                  Trasparenza, partecipazione e innovazione per la città di Messina.
-                </p>
-              </div> */}
+              {/* Titolo principale per accessibilità - nascosto visivamente */}
+              <h1 className="sr-only">Portale Open Data del Comune di Messina</h1>
               
               {/* Palazzo Zanca sopra la search bar */}
               <div style={{ 
@@ -112,7 +105,7 @@ export default function Home() {
               </div>
               
               {/* Barra di Ricerca Grande */}
-              <form onSubmit={handleSearch} className="search-bar-home" style={{ position: 'relative', zIndex: 10 }}>
+              <form onSubmit={handleSearch} role="search" className="search-bar-home" style={{ position: 'relative', zIndex: 10 }}>
                 <span className="search-icon d-none d-md-flex">
                   <Icon icon="it-search" color="primary" size="sm" aria-hidden="true" />
                 </span>

@@ -3,7 +3,8 @@ import React from 'react';
 export default function Informazioni() {
   return (
     <div>
-      <h2>Informazioni</h2>
+      {/* H1 principale per accessibilità */}
+      <h1>Informazioni</h1>
       <p className="text-muted">Portale Open Data del Comune di Messina: consulta, ricerca e scarica i dati pubblici messinesi in modo semplice e trasparente.</p>
       <ul>
         <li>Frontend sviluppato con React + Vite, design system .italia</li>

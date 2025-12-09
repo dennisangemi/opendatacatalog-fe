@@ -32,10 +32,10 @@ export default function Enti() {
     <div className="container">
       {/* Page Header - Sempre visibile */}
       <section className="py-4 border-bottom">
-        <h2 className="mb-2">
+        <h1 className="mb-2" style={{ fontSize: '2rem' }}>
           <Icon icon="it-pa" className="me-2" />
           Enti e Organizzazioni
-        </h2>
+        </h1>
         <p className="text-muted">
           {loading ? (
             'Caricamento enti in corso...'

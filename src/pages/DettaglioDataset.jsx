@@ -105,10 +105,10 @@ export default function DettaglioDataset() {
       
       {/* Header Section */}
       <section className="py-4 border-bottom">
-        <h2 className="mb-3">
+        <h1 className="mb-3" style={{ fontSize: '2rem' }}>
           <Icon icon="it-file" className="me-2" />
           {dataset.title}
-        </h2>
+        </h1>
         
         {!isLongDescription && description && (
           <p className="lead text-muted">{description}</p>

@@ -1,5 +1,76 @@
 @import "bootstrap-italia/dist/css/bootstrap-italia.min.css";
 
+/* Override colori primari per WCAG AAA - Design System Italia */
+:root {
+  --bs-primary: #004D99; /* Blu Italia scuro - contrasto 8.32:1 con bianco */
+  --bs-primary-rgb: 0, 77, 153;
+}
+
+/* Skip Link per accessibilità WCAG 2.1 AA */
+.skip-link {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  padding: 12px 20px;
+  background: #0066cc;
+  color: white;
+  z-index: 10000;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0 0 4px 0;
+  transition: top 0.3s ease;
+
+  &:focus {
+    top: 0;
+    outline: 3px solid #ffc107;
+    outline-offset: 2px;
+  }
+}
+
+/* Classe screen-reader-only - nasconde visivamente ma accessibile agli screen reader */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Fix contrasto WCAG 2.1 AA per testo muted su sfondi chiari */
+.bg-light .text-muted,
+.rounded-3.bg-light .text-muted {
+  color: #495057 !important; /* Contrasto 4.63:1 su #e9e6f2, conforme WCAG 2.1 AA */
+}
+
+/* Miglioramento contrasto .text-muted globale per WCAG AAA (7:1) */
+.text-muted {
+  color: #4a4a4a !important; /* Contrasto 9.01:1 su bianco, conforme WCAG AAA */
+}
+
+/* Text-muted nel footer piccolo su sfondo chiaro */
+.it-footer-small-prints .text-muted {
+  color: #404040 !important; /* Colore neutro scuro - contrasto 10.36:1 (WCAG AAA) */
+}
+
+/* Copyright nel footer piccolo - colore scuro per WCAG AAA */
+.footer-copyright-text {
+  color: #2b2b2b !important; /* Contrasto 13.27:1 su #f5f7fa (WCAG AAA) */
+  font-size: 0.875rem;
+}
+
+/* Link e elementi interattivi - colore primario scuro per WCAG AAA */
+a:not(.btn):not([class*="text-white"]) {
+  color: #004D99 !important; /* Contrasto 8.32:1 su bianco, conforme WCAG AAA */
+  
+  &:hover {
+    color: #003366 !important; /* Contrasto 12.63:1 per hover */
+  }
+}
+
 /* Notifiche sempre in primo piano */
 .notification-manager,
 [class*="notification"] {
@@ -44,17 +115,17 @@ body {
   border-bottom: 1px solid #e6e9f2;
   
   .navbar-brand {
-    color: #5c6f82 !important;
+    color: #212529 !important; /* Migliorato contrasto per WCAG AAA */
     font-weight: 600;
   }
   
   .btn-primary {
-    background: #0066cc;
+    background: #004D99; /* Colore primario scuro - contrasto 8.32:1 con bianco (WCAG AAA) */
     color: white;
     border: none;
     
     &:hover {
-      background: #0052a3;
+      background: #004080; /* Variante ancora più scura per hover */
     }
   }
   
@@ -67,6 +138,10 @@ body {
 .it-header-center-wrapper {
   background: white;
   padding: 1rem 0;
+  
+  .it-brand-tagline {
+    color: #212529 !important; /* Migliorato contrasto per WCAG AAA */
+  }
   
   .it-header-center-content-wrapper {
     display: flex;
@@ -155,7 +230,7 @@ body {
   .nav-link {
     display: block;
     padding: 1rem 1.25rem;
-    color: #5c6f82 !important;
+    color: #212529 !important; /* Migliorato contrasto per WCAG AAA */
     font-weight: 500;
     transition: all 0.2s;
     text-decoration: none;
@@ -608,7 +683,7 @@ body {
   margin-top: auto;
   
   .it-footer-main {
-    background: #0066cc;
+    background: #004D99; /* Colore primario scuro del design system - contrasto 8.32:1 con bianco (WCAG AAA) */
     color: white;
     
     .it-brand-wrapper {
@@ -645,8 +720,17 @@ body {
       margin-bottom: 1rem;
       
       a {
+        text-decoration: underline; /* WCAG 1.4.1: link distinguibili senza colore */
+        text-underline-offset: 3px;
+        
         &:hover {
           opacity: 0.85;
+          text-decoration-thickness: 2px;
+        }
+        
+        &:focus {
+          outline: 2px solid white;
+          outline-offset: 2px;
         }
       }
     }
@@ -671,13 +755,19 @@ body {
           display: block;
           padding: 0.5rem 0;
           color: white;
-          text-decoration: none;
-          transition: opacity 0.2s ease;
+          text-decoration: underline; /* WCAG 1.4.1: link distinguibili senza colore */
+          text-underline-offset: 2px;
+          transition: all 0.2s ease;
           font-size: 0.95rem;
           
           &:hover {
             opacity: 0.8;
-            text-decoration: underline;
+            text-decoration-thickness: 2px;
+          }
+          
+          &:focus {
+            outline: 2px solid white;
+            outline-offset: 2px;
           }
         }
       }
@@ -699,14 +789,20 @@ body {
         }
         
         a {
-          color: #0066cc;
-          text-decoration: none;
-          transition: color 0.2s ease;
+          color: #004D99;
+          text-decoration: underline; /* WCAG 1.4.1: link distinguibili senza colore */
+          transition: all 0.2s ease;
           font-size: 0.875rem;
+          text-underline-offset: 2px; /* Migliora leggibilità sottolineatura */
           
           &:hover {
-            color: #004d99;
-            text-decoration: underline;
+            color: #003366;
+            text-decoration-thickness: 2px; /* Sottolineatura più spessa su hover */
+          }
+          
+          &:focus {
+            outline: 2px solid #004D99;
+            outline-offset: 2px;
           }
         }
         
@@ -721,18 +817,18 @@ body {
 
 /* Button styles */
 .btn-primary {
-  background: #0066cc;
-  border-color: #0066cc;
+  background: #004D99; /* Colore primario scuro - contrasto 8.32:1 con bianco (WCAG AAA) */
+  border-color: #004D99;
   font-weight: 600;
   transition: all 0.3s ease;
   min-height: 44px; // Touch-friendly size
   
   @media (hover: hover) {
     &:hover {
-      background: #0052a3;
-      border-color: #0052a3;
+      background: #004080; /* Variante ancora più scura per hover */
+      border-color: #004080;
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 77, 153, 0.3);
     }
   }
   
@@ -742,28 +838,28 @@ body {
   
   @media (hover: none) {
     &:active {
-      background: #0052a3;
-      border-color: #0052a3;
+      background: #004080;
+      border-color: #004080;
     }
   }
 }
 
 .btn-outline-primary {
-  color: #0066cc;
-  border-color: #0066cc;
+  color: #003366; /* Colore primario molto scuro - contrasto 12.63:1 (WCAG AAA) */
+  border-color: #003366;
   font-weight: 600;
   transition: all 0.3s ease;
   min-height: 44px; // Touch-friendly size
   
   svg {
-    color: #0066cc !important;
-    fill: #0066cc !important;
+    color: #003366 !important;
+    fill: #003366 !important;
     transition: all 0.3s ease;
   }
   
   .icon {
-    color: #0066cc !important;
-    fill: #0066cc !important;
+    color: #003366 !important;
+    fill: #003366 !important;
     transition: all 0.3s ease;
   }
   
