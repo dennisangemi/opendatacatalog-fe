@@ -24,7 +24,37 @@ export default function Header() {
             <div className="row">
               <div className="col-12">
                 <div className="it-header-slim-wrapper-content">
-                  <Link className="d-none d-lg-block navbar-brand" to="/">
+                  <Link 
+                    className="d-none d-lg-block navbar-brand" 
+                    to="/"
+                    style={{
+                      padding: '0.5rem 0.75rem',
+                      borderRadius: '4px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.outline = '3px solid #004D99';
+                      e.target.style.outlineOffset = '2px';
+                      e.target.style.background = '#e9ecef';
+                      e.target.style.boxShadow = '0 0 0 4px rgba(0, 77, 153, 0.15)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.outline = '';
+                      e.target.style.outlineOffset = '';
+                      e.target.style.background = '';
+                      e.target.style.boxShadow = '';
+                    }}
+                    onMouseEnter={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.background = '#e9ecef';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (document.activeElement !== e.target) {
+                        e.target.style.background = '';
+                      }
+                    }}
+                  >
                     Comune di Messina
                   </Link>
                 </div>

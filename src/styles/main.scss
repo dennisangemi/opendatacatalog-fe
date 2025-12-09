@@ -9,21 +9,32 @@
 /* Skip Link per accessibilità WCAG 2.1 AA */
 .skip-link {
   position: absolute;
-  top: -50px;
-  left: 0;
-  padding: 12px 20px;
-  background: #0066cc;
-  color: white;
+  top: -100px; /* Completamente fuori schermo finché non riceve focus */
+  left: 10px;
+  padding: 12px 24px;
+  background: #004D99; /* Blu primario scuro Design System - contrasto 8.32:1 */
+  color: #FFFFFF !important; /* Forza testo bianco */
   z-index: 10000;
   text-decoration: none;
   font-weight: 600;
-  border-radius: 0 0 4px 0;
-  transition: top 0.3s ease;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: top 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  opacity: 0; /* Invisibile di default */
+  pointer-events: none; /* Non intercetta click quando nascosto */
 
   &:focus {
-    top: 0;
-    outline: 3px solid #ffc107;
+    top: 10px; /* Appare in alto a sinistra quando riceve focus */
+    opacity: 1;
+    pointer-events: auto;
+    outline: 3px solid #FFFFFF;
     outline-offset: 2px;
+    color: #FFFFFF !important; /* Forza testo bianco anche su focus */
+  }
+  
+  &:hover {
+    color: #FFFFFF !important; /* Forza testo bianco anche su hover */
   }
 }
 
@@ -63,7 +74,7 @@
 }
 
 /* Link e elementi interattivi - colore primario scuro per WCAG AAA */
-a:not(.btn):not([class*="text-white"]) {
+a:not(.btn):not([class*="text-white"]):not(.skip-link) {
   color: #004D99 !important; /* Contrasto 8.32:1 su bianco, conforme WCAG AAA */
   
   &:hover {
@@ -117,6 +128,7 @@ body {
   .navbar-brand {
     color: #212529 !important; /* Migliorato contrasto per WCAG AAA */
     font-weight: 600;
+    text-decoration: none;
   }
   
   .btn-primary {
